@@ -1,15 +1,13 @@
 import { MdClose } from "react-icons/md";
 import { BsCartX } from "react-icons/bs";
 import { useContext,useState} from "react";
-import spinner from "@/assets/spinner.svg"
+import spinner from "../../assets/spinner.svg"
 import CartItem from "./CartItem/CartItem";
-import { AppContext } from "@/Context/AppContext";
 import axios from "axios"; 
 import { loadStripe } from '@stripe/stripe-js';
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../Context/AppContext";
 import { AuthContext } from "../../Context/AuthContext";
-
-
 
 
 const Cart = ({ setshowCart }) => {

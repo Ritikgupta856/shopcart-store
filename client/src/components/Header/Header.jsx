@@ -6,7 +6,7 @@ import Search from "../Search/Search";
 
 import Cart from "../Cart/Cart";
 import { useContext, useState } from "react";
-import { AppContext } from "@/Context/AppContext";
+import { AppContext} from "../../Context/AppContext";
 import { TbSearch } from "react-icons/tb";
 
 import { FaRegUser } from "react-icons/fa";

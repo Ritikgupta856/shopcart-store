@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import Product from "@/Products/Product/Product";
+import Product from '../../Products/Product/Product';
+
 import axios from 'axios';
 
 const CategoryPage = () => {
 
   const [products, setProducts] = useState([]);
     const {name} = useParams();
-
-    console.log(name)
 
 
     useEffect(() => {

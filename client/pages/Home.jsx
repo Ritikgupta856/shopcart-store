@@ -1,10 +1,10 @@
 import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import Herobanner from "@/components/HeroBanner/Herobanner";
-import Category from "@/components/Category/Category"
-import { AppContext } from "@/Context/AppContext";
-import Products from "@/components/Products/Products";
-import Loader from "@/components/Loader/Loader";
+import Category from "../src/components/Category/Category";
+import Products from "../src/components/Products/Products";
+import Loader from "../src/components/Loader/Loader";
+import { AppContext } from "../src/Context/AppContext";
 
 const Home = () => {
   const { categories, setCategories, products, setProducts } =

@@ -1,5 +1,5 @@
 
-import about from "@/assets/about.jpg";
+import about from "../../assets/about.jpg";
 
 function AboutUs() {
   return (

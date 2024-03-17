@@ -1,5 +1,5 @@
 import { FaLocationArrow, FaMobileAlt, FaEnvelope } from "react-icons/fa";
-import Payment from "@/assets/payments.png";
+import Payment from "../../assets/payments.png";
 
 const Footer = () => {
   return (

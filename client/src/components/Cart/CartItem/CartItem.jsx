@@ -1,6 +1,6 @@
 import { MdClose } from "react-icons/md";
 import { useContext } from "react";
-import { AppContext } from "@/Context/AppContext";
+import { AppContext } from "../../../Context/AppContext";
 
 
 const CartItem = () => {
