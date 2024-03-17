@@ -5,7 +5,7 @@ const Product = ({ id, data }) => {
 
   return (
     <div className="w-[calc(50%-5px)] md:w-[calc(25%-15px)] mt-10 cursor-pointer " onClick={() => navigate("/product/" + id)}>
-      <div className="w-full h-[200px] md:h-[350px] flex items-center justify-center  bg-gray-100">
+      <div className="w-full h-fit md:h-[350px] flex items-center justify-center  bg-gray-100">
         <img
           src={data.image}
           alt=""

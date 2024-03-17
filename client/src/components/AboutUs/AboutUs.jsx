@@ -3,9 +3,9 @@ import about from "../../assets/about.jpg";
 
 function AboutUs() {
   return (
-    <div className="py-6 px-4 h-screen">
+    <div className="py-6 px-4 h-fit sm:h-screen">
 
-      <div className="flex items-center">
+      <div className="flex flex-col items-center sm:flex-row sm:justify-center">
         <img src={about} alt="" width={500}/>
         <div className="flex flex-col">
           <h2 className="text-3xl text-center font-medium">Who are we?</h2>
