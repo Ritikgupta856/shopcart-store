@@ -1,14 +1,26 @@
 import { useNavigate } from "react-router-dom";
 const Category = ({ categories }) => {
   const navigate = useNavigate();
+
   return (
-    <div className="grid grid-cols-2 gap-8 lg:grid-cols-4 px-4 py-2 my-6 md:my-12 justify-center z-0">
+    <div className="px-4 py-4 md:px-8 mt-10 ">
     
-      {categories.map((item) => (
-        <div key={item._id} className="cursor-pointer" onClick={() => navigate(`/category/${item.name}`) }>
-          <img src={item.image} alt="" className="transition duration-300 ease hover:scale-105 " />
-        </div>
-      ))}
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 my-10 cursor-pointer">
+        {categories.map((item) => (
+          <div
+            key={item._id}
+            className=" bg-black"
+            onClick={() => navigate(`/category/${item.name.toLowerCase()}`)}
+          >
+            <img
+              src={item.image}
+              alt=""
+              className="transition duration-300 ease hover:scale-105"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

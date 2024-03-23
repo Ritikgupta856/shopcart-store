@@ -25,7 +25,7 @@ const stripePromise= loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
     const stripe = await stripePromise;
   
-  const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/orders`, {
+  const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/create-checkout-session`, {
     products: cartItems,
     user:currentUser.user,
     totalAmount:cartSubTotal

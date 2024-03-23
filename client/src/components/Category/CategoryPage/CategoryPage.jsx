@@ -1,39 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import Product from '../../Products/Product/Product';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
+import Products from "../../Products/Products";
 
 const CategoryPage = () => {
-
   const [products, setProducts] = useState([]);
-    const {name} = useParams();
+  const {name} = useParams();
+
+  useEffect(() => {
+    fetchProduct();
+  }, [name]);
 
 
-    useEffect(() => {
-      fetchProduct();
-    }, []);
-  
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/allproducts`);
-        const selectedProducts = response.data.filter((items) => items.category === name);
-        setProducts(selectedProducts);
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
-    console.log(products)
+  const fetchProduct = async () => {
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/allproducts`)
 
-  
+        const allProducts = response.data;
+
+        const filteredProducts = allProducts.filter(
+          (product) =>
+            product.category.toLowerCase() === name
+        );
+      
+      setProducts(filteredProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
 
   return (
     <div>
-       <h1>{products}</h1>
-      <Product product={products} innerPage={true}/>
+      <Products products={products} innerPage={false} headingText={name} />
     </div>
-  )
-}
+  );
+};
 
-export default CategoryPage
+export default CategoryPage;

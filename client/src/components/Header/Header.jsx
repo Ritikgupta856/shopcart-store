@@ -25,7 +25,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky z-1000 top-0 w-full py-4 px-6 bg-white border-b-[1px] border-neutral-500/0.5">
+    <header className="sticky z-20 top-0 w-full py-4 px-6 bg-white border-b-[1px] border-neutral-500/0.5">
       <div className="flex justify-between cursor-pointer">
         <div className="flex items-center gap-2" onClick={() => navigate("/")}>
           <img src={logo} width={40} alt="" />

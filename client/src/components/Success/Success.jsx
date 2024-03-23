@@ -15,7 +15,7 @@ function Success() {
       </div>
      <h2>Thank you for your purchase</h2>
      <p className='description'> If you have any questions , please email&nbsp; <a href='mailto:order@gmail.com' className='email-msg'>order@gmail.com</a> </p>
-     <button className='p-2 bg-red-500 text-white' onClick={() => navigate("/")}>Continue Shopping</button>
+     <button className='p-3 rounded-xl bg-red-500 text-white' onClick={() => navigate("/")}>Continue Shopping</button>
      </div>
     </div>
   )

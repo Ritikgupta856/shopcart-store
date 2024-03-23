@@ -1,15 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const Product = ({ id, data }) => {
-  const navigate = useNavigate();
+
 
   return (
-    <div className="w-[calc(50%-5px)] md:w-[calc(25%-15px)] mt-10 cursor-pointer " onClick={() => navigate("/product/" + id)}>
-      <div className="w-full h-fit md:h-[350px] flex items-center justify-center  bg-gray-100">
+    <Link to={"/product/" + id}>
+      <div className="h-[250px] md:h-[350px] flex items-center justify-center bg-gray-100">
         <img
-          src={data.image}
+          src={data?.image}
           alt=""
-          className="w-full hover:scale-110 transition duration-300 "
+          className="hover:scale-110 transition duration-300 shrink-0 "
         />
       </div>
 
@@ -17,7 +17,7 @@ const Product = ({ id, data }) => {
         <span className="truncate mt-2 text-[16px] font-medium">{data?.name}</span>
         <span className="font-medium text-2xl"> &#8377;{data?.price}</span>
       </div>
-    </div>
+    </Link>
   );
 };
 
