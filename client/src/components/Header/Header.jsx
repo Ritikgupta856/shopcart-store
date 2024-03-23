@@ -56,7 +56,7 @@ const Header = () => {
             </li>
             <li>
               <NavLink
-                to="/Category"
+                to="/category"
                 className={({ isActive }) =>
                   isActive ? "text-red-500" : "text-black"
                 }

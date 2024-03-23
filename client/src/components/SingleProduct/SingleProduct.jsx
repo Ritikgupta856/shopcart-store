@@ -81,7 +81,7 @@ const SingleProduct = () => {
     <div className="py-5 px-5 mt-10 max-w-[1260] w-full sm:px-10">
       <div className="">
         <div className="flex flex-col md:flex-row w-full gap-10">
-          <div className="bg-neutral-100 flex w-[500px] h-[500px] shrink-0 rounded-2xl">
+          <div className="bg-neutral-100 flex w-fit md:w-[500px] h-[500px] shrink-0 rounded-2xl">
             <img src={product.image}  alt={product.image} className="w-full" />
           </div>
           <div className="flex flex-col gap-5">

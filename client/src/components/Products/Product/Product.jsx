@@ -5,7 +5,7 @@ const Product = ({ id, data }) => {
 
   return (
     <Link to={"/product/" + id}>
-      <div className="h-[250px] md:h-[350px] flex items-center justify-center bg-gray-100">
+      <div className="h-fit md:h-[350px] flex items-center justify-center bg-gray-100">
         <img
           src={data?.image}
           alt=""
