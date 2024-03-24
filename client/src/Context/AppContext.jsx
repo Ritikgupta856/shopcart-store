@@ -13,7 +13,6 @@ const AppProvider = ({children}) => {
 },[location])  
 
 
-
   const [categories, setCategories] = useState([]); 
   const [products, setProducts] = useState([]); 
   const [showCart, setShowCart] = useState(false);
@@ -28,7 +27,6 @@ const AppProvider = ({children}) => {
       setCartItems(JSON.parse(storedCartItems));
     }
   }, []);
-
 
 
   useEffect(()=>{

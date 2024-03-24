@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({children}) => {
 
+
   const navigate = useNavigate();
 
   const [currentUser, setCurrentUser] = useState({

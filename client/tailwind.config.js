@@ -76,17 +76,13 @@ module.exports = {
           to: { transform: "translateX(0)" },
         },
 
-        "skeleton-loading": {
-          '0%': { backgroundColor: 'hsl(0, 0%, 75%)' }, // Gray
-          '100%': { backgroundColor: 'hsl(0, 0%, 90%)' },
-        },
-
+   
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "slide-cart-window": "slide-cart-window 0.5s ease forwards",
-        "skeleton": "skeleton-loading 1s linear infinite alternate",
+    
       },
     },
   },
