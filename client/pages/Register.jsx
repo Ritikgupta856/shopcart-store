@@ -7,8 +7,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    fullname: "",
     email: "",
     password: "",
   });
@@ -25,7 +24,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/register",
+        `${import.meta.env.VITE_SERVER_URL}api/register`,
         formData
       );
       const { success, token } = response.data;
@@ -35,7 +34,7 @@ const Register = () => {
         navigate("/login");
       }
     } catch (error) {
-      toast.success("Registration failed");
+      toast.error("Registration failed");
       console.error("Registration failed", error);
     }
   };
@@ -47,27 +46,17 @@ const Register = () => {
           <p className="text-lg text-center font-medium">Create an account</p>
           <form onSubmit={handleSubmit} className="flex flex-col">
             <div className="mt-2">
-              <div>First Name</div>
+              <div>Full Name</div>
               <input
                 type="text"
-                name="firstname"
-                value={formData.firstname}
+                name="fullname"
+                value={formData.fullname}
                 className="border-2 w-full mt-1 p-1"
                 onChange={handleChange}
                 required
               />
             </div>
-            <div className="mt-2">
-              <div>Last Name</div>
-              <input
-                type="text"
-                name="lastname"
-                value={formData.lastname}
-                className="border-2 w-full mt-1 p-1"
-                onChange={handleChange}
-                required
-              />
-            </div>
+          
             <div className="mt-2">
               <div>Email</div>
               <input

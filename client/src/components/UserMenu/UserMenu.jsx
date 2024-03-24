@@ -12,7 +12,7 @@ const UserMenu = ({setshowMenu}) => {
     <div className="absolute top-15 right-10 z-10 flex min-w-[180px] flex-col rounded-md border bg-white  shadow-lg shadow-blue-gray-500/10 cursor-pointer">
       {currentUser.user  ? (
         <div>
-          <p className="capatialize hover:bg-gray-100 px-3 py-2">{currentUser.user.firstname}</p>
+          <p className="capatialize hover:bg-gray-100 px-3 py-2">{currentUser.user.fullname}</p>
           <hr/>
           <p className="px-3 py-2 hover:bg-gray-100" onClick={logOut}>Logout</p>
         </div>

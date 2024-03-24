@@ -69,9 +69,9 @@ app.post("/upload/category", upload.single("category"), async (req, res) => {
 
 app.post("/api/register", async (req, res) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
+    const { fullname, email, password } = req.body;
 
-    if (!(firstname && lastname && email && password)) {
+    if (!(fullname && email && password)) {
       res.status(400).send("All Fields are compulsory");
     }
 
@@ -84,8 +84,7 @@ app.post("/api/register", async (req, res) => {
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      firstname,
-      lastname,
+      fullname,
       email,
       password: encryptedPassword,
     });
@@ -210,6 +209,26 @@ app.get("/allcategories", async (req, res) => {
   }
 });
 
+
+app.get("/api/orders", async (req, res) => {
+  try {
+    let orders = await Order.find({});
+    let totalRevenue = 0;
+
+    let paid_orders =  await Order.find({paid:true});
+
+    paid_orders.forEach(order => {
+      totalRevenue += order.totalAmount;
+    });
+
+    res.json({ orders, totalRevenue });
+
+  } catch (error) {
+    console.log("Error Fetching orders:", error);
+    res.status(500).json({ error: "Error fetching orders" });
+  }
+});
+
 app.post("/addcategory", async (req, res) => {
   try {
     const newCategory = new Category({
@@ -247,7 +266,7 @@ app.post("/removecategory", async (req, res) => {
 app.post("/create-checkout-session", async (req, res) => {
   const { products, user, totalAmount } = req.body;
 
-  const line_items = products.map((product) => ({
+  const lineItems = products.map((product) => ({
     price_data: {
       currency: "inr",
       product_data: {
@@ -258,11 +277,7 @@ app.post("/create-checkout-session", async (req, res) => {
     quantity: product.quantity,
   }));
 
-  const newOrder = new Order({
-    products,
-    user,
-    totalAmount,
-  });
+  const newOrder = new Order({ products, user, totalAmount });
 
   try {
     const savedOrder = await newOrder.save();
@@ -277,11 +292,13 @@ app.post("/create-checkout-session", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: { allowed_countries: ["IN"] },
-      line_items,
+      line_items:lineItems,
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/success`,
       cancel_url: `${process.env.CLIENT_URL}`,
-      metadata: { orderId: newOrder._id },
+      metadata: {
+       orderId: newOrder._id.toString(),
+     },
     });
 
     res.status(200).json({ sessionId: session.id });
@@ -291,30 +308,29 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-app.post("/webhook", async (request, response) => {
-  const sig = request.headers["stripe-signature"];
+app.post("/webhook", async (req, res) => {
+  const sig = req.headers["stripe-signature"];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(
-      request.rawBody,
+      req.rawBody,
       sig,
       endpointSecret
     );
   } catch (err) {
     console.log(`Error message: ${err.message}`);
-    response.status(400).send(`Webhook Error: ${err.message}`);
+    res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
 
   if (event.type === "checkout.session.completed") {
-    const data = event.data.object;
-    const orderId = data.metadata.orderId;
-
+    const session = event.data.object;
+    const orderId = session.metadata.orderId;
     try {
-      const order = await Order.findByIdAndUpdate(orderId, { paid: true });
+      const order = await Order.findByIdAndUpdate(orderId, { paid: true }, { new: true });
       console.log("Updated Order:", order);
     } catch (error) {
       console.error("Error updating order:", error);
@@ -325,7 +341,7 @@ app.post("/webhook", async (request, response) => {
     console.log(`Unhandled event type: ${event.type}`);
   }
 
-  response.send();
+  res.send();
 });
 
 app.listen(process.env.PORT || 3000, () => {

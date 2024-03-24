@@ -26,10 +26,10 @@ const Login = () => {
 const handleSubmit = async(e) =>{
   e.preventDefault();
   try {
-    const response = await axios.post('http://localhost:8000/api/login',formData);
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/login`,formData);
     const {success,token,user} = response.data;
     if(success){
-      toast.success("LoggedIn")
+      toast.success("Login Successfully")
       setCurrentUser({
         user,
         token

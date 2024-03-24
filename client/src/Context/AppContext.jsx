@@ -22,6 +22,15 @@ const AppProvider = ({children}) => {
   const [cartSubTotal, setCartSubTotal] = useState(0);
 
 
+  useEffect(() => {
+    const storedCartItems = localStorage.getItem("cartItems");
+    if (storedCartItems) {
+      setCartItems(JSON.parse(storedCartItems));
+    }
+  }, []);
+
+
+
   useEffect(()=>{
     const count = cartItems?.reduce((acc,item)=> acc + item.quantity,0)
     setCartCount(count);
@@ -40,7 +49,7 @@ const handleAddToCart = (product,quantity) => {
   else{
     items.push({ ...product, quantity: quantity })
   }
-
+  localStorage.setItem("cartItems", JSON.stringify(items));
   setCartItems(items);
 }
 
@@ -48,8 +57,11 @@ const handleAddToCart = (product,quantity) => {
 const handleRemoveFromCart = (product) => {
   let items = [...cartItems]
   items = items.filter((p)=>p._id != product._id)
-  setCartItems(items)
+  localStorage.setItem("cartItems", JSON.stringify(items)); 
+  setCartItems(items);
 }
+
+
 const handleCartProductQuantity= (type,product) => {
   let items = [...cartItems]
   let index = cartItems.findIndex((p)=>product._id === p._id)
@@ -60,7 +72,7 @@ const handleCartProductQuantity= (type,product) => {
     if(items[index].quantity === 1 ) return;
     items[index].quantity-=1;
   }
-
+  localStorage.setItem("cartItems", JSON.stringify(items)); 
   setCartItems(items);
 }
   

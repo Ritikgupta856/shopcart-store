@@ -84,7 +84,7 @@ const Header = () => {
                 onClick={() => setshowMenu(!showMenu)}
                 className="relative text-white bg-black h-8 w-8 rounded-full flex items-center justify-center font-semibold"
               >
-              {currentUser.user.firstname[0]}
+              {currentUser.user.fullname[0]}
               </span>
             ) : (
               <div

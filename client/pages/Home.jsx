@@ -3,8 +3,9 @@ import axios from "axios";
 import Herobanner from "@/components/HeroBanner/Herobanner";
 import Category from "../src/components/Category/Category";
 import Products from "../src/components/Products/Products";
-import Loader from "../src/components/Loader/Loader";
 import { AppContext } from "../src/Context/AppContext";
+import CategorySkeleton from "../src/components/Skeleton/CategorySkeleton";
+import ProductsSkeleton from "../src/components/Skeleton/ProductSkeleton";
 
 const Home = () => {
   const { categories, setCategories, products, setProducts } =
@@ -47,8 +48,8 @@ const Home = () => {
   return (
     <main>
       <Herobanner />
-      {isLoading ? <Loader /> : <Category categories={categories} />}
-      {isLoading ? <Loader /> :  <Products products={products} headingText="Popular Products" />}
+      {isLoading ? <CategorySkeleton /> : <Category categories={categories} />}
+      {isLoading ? <ProductsSkeleton headingText="Popular Products" /> :  <Products products={products} headingText="Popular Products" />}
     </main>
   );
 };

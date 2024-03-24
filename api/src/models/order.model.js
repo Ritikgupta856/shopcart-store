@@ -8,6 +8,7 @@ const orderSchema = mongoose.Schema(
     },
     user: {
       type: String,
+      required:true
     },
     totalAmount: {
       type: Number,
