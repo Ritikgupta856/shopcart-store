@@ -24,6 +24,11 @@ const Header = () => {
 
   const navigate = useNavigate();
 
+  const scrollToCategory = () => {
+    const categorySection = document.getElementById("category");
+    categorySection.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <header className="sticky z-20 top-0 w-full py-4 px-6 bg-white border-b-[1px] border-neutral-500/0.5">
       <div className="flex justify-between cursor-pointer">

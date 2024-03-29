@@ -3,7 +3,7 @@ import Payment from "../../assets/payments.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-black w-full text-white">
+    <footer className=" bg-black w-full text-white">
 
       <div className="py-8 px-4 max-w-[1200px] mx-auto my-0 flex flex-wrap gap-5 md:justify-between">
 

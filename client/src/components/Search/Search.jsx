@@ -20,13 +20,13 @@ const Search = ({ setshowSearch }) => {
   };
 
   return (
-    <div className="fixed inset-0 h-full w-full z-999 bg-white">
+    <div className="fixed inset-0 h-full w-full z-999 bg-white flex flex-col">
       <div className="flex justify-center items-center py-5 relative w-full border-b ">
         <input
           type="text"
           autoFocus
           placeholder="Search for products"
-          className="w-full px-4 py-4 md:py-8 text-xl  md:text-5xl outline-none bg-transparent  placeholder:text-2xl sm:placeholder:text-5xl text-center uppercase max-w-[1200px] h-10 sm:h-10"
+          className="w-full px-4 py-4 md:py-8 text-xl md:text-5xl outline-none bg-transparent  placeholder:text-2xl sm:placeholder:text-5xl text-center uppercase max-w-[1200px] h-10 sm:h-10"
           value={searchQuery}
           onChange={handleSearch}
         />
@@ -35,8 +35,7 @@ const Search = ({ setshowSearch }) => {
           onClick={() => setshowSearch(false)}
         />
       </div>
-      <div className="max-w-screen-lg mx-auto mt-2">
-      <div className="h-[calc(100vh-40px)] overflow-auto">
+      <div className="max-w-screen-lg mx-auto flex-grow overflow-auto">
         {filteredProducts.map((product) => (
           <div
             key={product._id}
@@ -63,7 +62,7 @@ const Search = ({ setshowSearch }) => {
         ))}
       </div>
       </div>
-    </div>
+
   );
 };
 
