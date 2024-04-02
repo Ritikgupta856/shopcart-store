@@ -5,10 +5,10 @@ const Herobanner = () => {
   return (
     <div className="container flex flex-col-reverse gap-10 w-full px-4 py-4 items-center h-fit md:px-10 md:py-5 md:flex-row md:justify-between md:h-[calc(100vh-50px)] mb-10 ">
       <div className="flex flex-col items-center md:items-start">
-        <h1 className="text-5xl md:text-7xl font-bold">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold">
           Experience Sound
         </h1>
-        <h2 className="text-3xl md:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text mb-10">
+        <h2 className="text-3xl sm:text-4xl md:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text mb-10">
           Like Never Before
         </h2>
 
@@ -31,7 +31,7 @@ const Herobanner = () => {
           </button>
         </div>
       </div>
-      <div className="w-[200px] md:w-[400px] md:h-[450px] shrink-0">
+      <div className="w-[200px] sm:w-[250px] md:w-[400px] md:h-[450px] shrink-0">
         <img src="/banner-img.png" alt="" className="w-full h-full" />
       </div>
     </div>
