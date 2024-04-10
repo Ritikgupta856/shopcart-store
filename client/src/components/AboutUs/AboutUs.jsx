@@ -3,14 +3,14 @@ import about from "../../assets/about.jpg";
 
 function AboutUs() {
   return (
-    <div className="container py-6 px-4 min-h-screen">
+    <div className="container py-6 px-4 h-fit">
 
-      <div className="flex flex-col items-center  sm:flex-row sm:justify-center">
+      <div className="flex flex-col items-center lg:flex-row sm:justify-center mb-10">
         <img src={about} alt="" width={500}/>
         <div className="flex flex-col">
-          <h2 className="text-3xl text-center font-medium">Who are we?</h2>
+          <h2 className="text-3xl sm:text-4xl text-center font-medium uppercase mb-8">Who are we?</h2>
 
-          <div className="flex flex-col font-medium gap-6 mt-6 text-[navy]">
+          <div className="flex text-sm sm:text-medium flex-col font-medium text-justify gap-8 text-[navy]">
           <p>
             Welcome to ShopCart, your ultimate destination for style,
             inspiration, and exceptional shopping experiences. We are dedicated

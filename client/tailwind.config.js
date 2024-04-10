@@ -75,6 +75,10 @@ module.exports = {
           from: { transform: "translateX(100%)" },
           to: { transform: "translateX(0)" },
         },
+        "slide-search-window": {
+          from: { transform: "translateY(100%)" },
+          to: { transform: "translateY(0)" },
+        },
 
    
       },
@@ -82,6 +86,7 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "slide-cart-window": "slide-cart-window 0.5s ease forwards",
+        "slide-search-window": "slide-search-window 0.7s ease forwards",
     
       },
     },

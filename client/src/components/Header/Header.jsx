@@ -33,7 +33,7 @@ const Header = () => {
     <header className="sticky z-20 top-0 w-full py-4 px-6 bg-white border-b-[1px] border-neutral-500/0.5">
       <div className="flex justify-between cursor-pointer">
         <div className="flex items-center gap-2" onClick={() => navigate("/")}>
-          <img src={logo} width={40} alt="" />
+          <img src={logo} width={30} alt="" />
           <div className="text-xl font-bold text-purple-800">ShopCart</div>
         </div>
 

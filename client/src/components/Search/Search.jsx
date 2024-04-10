@@ -20,7 +20,7 @@ const Search = ({ setshowSearch }) => {
   };
 
   return (
-    <div className="fixed inset-0 h-full w-full z-999 bg-white flex flex-col">
+    <div className="fixed inset-0 h-full w-full z-999 bg-white flex flex-col animate-slide-search-window">
       <div className="flex justify-center items-center py-5 relative w-full border-b ">
         <input
           type="text"

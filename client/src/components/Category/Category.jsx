@@ -5,17 +5,17 @@ const Category = ({ categories }) => {
   return (
     <section id="category" className="px-4 py-4 md:px-8 mt-10 ">
     
-      <div className="grid grid-cols-2  lg:grid-cols-4 gap-5 my-10 cursor-pointer">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 my-10 cursor-pointer">
         {categories?.map((item) => (
           <div
             key={item._id}
-            className="bg-black"
+            className="bg-black cursor-pointer overflow-hidden"
             onClick={() => navigate(`/category/${item.name.toLowerCase()}`)}
           >
             <img
               src={item.image}
               alt=""
-              className="transition duration-300 ease hover:scale-105"
+              className="transition duration-300 ease-in-out hover:scale-[1.2]"
             />
           </div>
         ))}
