@@ -20,7 +20,7 @@ module.exports = {
       backgroundImage: {
 
         'newsletter': "url('/newsletter-bg.jpeg')",
-        
+    
       },
       colors: {
         border: "hsl(var(--border))",

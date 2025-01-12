@@ -1,41 +1,104 @@
-import { useNavigate } from "react-router-dom";
 
-const Herobanner = () => {
-  const navigate = useNavigate();
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Button } from '../ui/button';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+
+const slides = [
+  {
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=100&w=3840",
+    title: "Premium Headphones",
+    description: "Immerse yourself in studio-quality sound with our premium collection"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1508243771214-6e95d137426b?auto=format&fit=crop&q=100&w=3840",
+    title: "Smart Watches",
+    description: "Elevate your lifestyle with cutting-edge wearable technology"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&q=100&w=3840",
+    title: "Home Theatre Systems",
+    description: "Experience cinematic excellence in the comfort of your home"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=100&w=3840",
+    title: "Wireless Earbuds",
+    description: "Uncompromised sound quality meets ultimate portability"
+  },
+
+  {
+    image: "https://images.unsplash.com/photo-1420161900862-9a86fa1f5c79?auto=format&fit=crop&q=100&w=3840",
+    title: "Bluetooth Speakers",
+    description: "Premium audio engineering meets sophisticated design"
+  }
+];
+
+const NextArrow = ({onClick}) => (
+  <button
+    onClick={onClick}
+    className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition hover:bg-white/40"
+  >
+    <ArrowRight className="h-6 w-6 text-white" />
+  </button>
+);
+
+const PrevArrow = ({onClick}) => (
+  <button
+    onClick={onClick}
+    className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition hover:bg-white/40"
+  >
+    <ArrowLeft className="h-6 w-6 text-white" />
+  </button>
+);
+
+const HeroBanner = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    fade: true,
+    cssEase: "linear",
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    pauseOnHover: true
+  };
+
   return (
-    <div className="container flex flex-col-reverse gap-10 w-full px-4 py-4 items-center h-fit md:px-10 md:py-5 md:flex-row md:justify-between md:h-[calc(100vh-50px)] mb-10 ">
-      <div className="flex flex-col items-center md:items-start">
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold">
-          Experience Sound
-        </h1>
-        <h2 className="text-3xl sm:text-4xl md:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text mb-10">
-          Like Never Before
-        </h2>
-
-        <p className="text-md md:text-lg font-semibold text-gray-900 mb-10 text-justify">
-          Step into the dawn of a revolutionary era in sound technology, where
-          unmatched quality and unparalleled experience converge to redefine the
-          way you perceive audio. Elevate your auditory journey and immerse
-          yourself in a world of sonic excellence like never before.
-        </p>
-
-        <div className="flex gap-4">
-          <button className="w-40 bg-black flex gap-2 items-center justify-center hover:bg-black/70 transition text-lg py-3 px-4 mt-4 text-white">
-            Shop Now
-          </button>
-          <button
-            onClick={() => navigate("/aboutus")}
-            className="w-40 bg-red-500 flex gap-2 items-center justify-center hover:bg-red-400 transition text-lg py-3 px-4 mt-4 text-white"
-          >
-            Read More
-          </button>
-        </div>
-      </div>
-      <div className="w-[200px] sm:w-[250px] md:w-[400px] md:h-[450px] shrink-0">
-        <img src="/banner-img.png" alt="" className="w-full h-full" />
-      </div>
+    <div className="hero-slider">
+      <Slider {...settings}>
+        {slides.map((slide, index) => (
+          <div key={index} className="relative h-[70vh]">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${slide.image})`,
+              }}
+            >
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h1 className="mb-4  text-4xl sm:text-6xl font-bold tracking-tight">{slide.title}</h1>
+                  <p className="mb-8 text-xl sm:text-2xl font-light">{slide.description}</p>
+                  <div className="flex items-center justify-center gap-4">
+                    <Button variant="outline" className="bg-white/10 text-white backdrop-blur-sm hover:bg-white/20">
+                      Shop Now
+                    </Button>
+                    <Button variant="outline" className="bg-white/10 text-white backdrop-blur-sm hover:bg-white/20">
+                      Read More
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };
 
-export default Herobanner;
+export default HeroBanner

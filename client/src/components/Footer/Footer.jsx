@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className=" bg-black w-full text-white">
 
-      <div className="py-8 px-4 max-w-[1200px] mx-auto my-0 flex flex-wrap gap-5 md:justify-between">
+      <div className="p-8 max-w-[1200px]  my-0 flex flex-wrap gap-5 md:justify-between">
 
         <div className="flex flex-col max-w-[300px] gap-6">
 
@@ -80,7 +80,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="flex items-center flex-col gap-4 border-t-[1px] border-neutral-700 py-4 px-6 sm:flex-row sm:justify-between ">
+      <div className="flex items-center flex-col gap-4 border-t-[1px] border-neutral-700 py-4 px-8 sm:flex-row sm:justify-between ">
         <span className="text-sm text-neutral-400">Copyright @2024 ShopCart. All Rights Reserved</span>
         <img src={Payment} alt="" />
       </div>
