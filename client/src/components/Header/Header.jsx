@@ -28,6 +28,11 @@ const Header = () => {
 
   const navigate = useNavigate();
 
+  const handleCategoryClick = (category) => {
+    navigate(`/category/${category.toLowerCase()}`, { replace: true });
+  };
+
+
   return (
     <header className="sticky z-20 top-0 w-full py-4 px-6 md:px-8 bg-white border-b border-neutral-500/50 shadow-md">
       <div className="flex justify-between items-center">
@@ -55,7 +60,7 @@ const Header = () => {
                   <NavigationMenuLink asChild>
                     <a
                       className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      href="/aboutus"
+                      href="/about-us"
                     >
                       About Us
                     </a>
@@ -66,15 +71,10 @@ const Header = () => {
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-2">
-                      {["Headphones", "Smart Watches", "Speakers", "Earbuds", "Home Theatre"].map((item) => (
-                        <li key={item}>
+                      {["Headphones", "Smart Watches", "Bluetooth Speakers", "Wireless Earbuds", "Home Theatre"].map((item) => (
+                        <li key={item} onClick={() => handleCategoryClick(item)}    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer">
                           <NavigationMenuLink asChild>
-                            <a
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                              href={`#${item.toLowerCase()}`}
-                            >
-                              <div className="text-sm font-medium leading-none">{item}</div>
-                            </a>
+                            <span>{item}</span>
                           </NavigationMenuLink>
                         </li>
                       ))}

@@ -34,7 +34,7 @@ function AppContent() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/success" element={<Success />} />
-              <Route path="/aboutus" element={<AboutUs />} />
+              <Route path="/about-us" element={<AboutUs />} />
             </Routes>
             {!hideFooter && (
               <>
