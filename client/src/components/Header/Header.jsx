@@ -32,9 +32,8 @@ const Header = () => {
     navigate(`/category/${category.toLowerCase()}`, { replace: true });
   };
 
-
   return (
-    <header className="sticky z-20 top-0 w-full py-4 px-6 md:px-8 bg-white border-b border-neutral-500/50 shadow-md">
+    <header className="sticky z-20 top-0 w-full py-4 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 bg-white border-b border-neutral-500/50 shadow-md">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
           <img src={logo} width={30} alt="ShopCart Logo" />
@@ -72,7 +71,7 @@ const Header = () => {
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-2">
                       {["Headphones", "Smart Watches", "Bluetooth Speakers", "Wireless Earbuds", "Home Theatre"].map((item) => (
-                        <li key={item} onClick={() => handleCategoryClick(item)}    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer">
+                        <li key={item} onClick={() => handleCategoryClick(item)} className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer">
                           <NavigationMenuLink asChild>
                             <span>{item}</span>
                           </NavigationMenuLink>

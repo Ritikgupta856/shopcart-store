@@ -4,7 +4,7 @@ import Payment from "../../assets/payments.png";
 const Footer = () => {
   return (
     <footer className="bg-black w-full text-white">
-      <div className="p-6 md:p-8 max-w-[1200px] flex flex-wrap gap-5 md:gap-8 lg:gap-10 xl:gap-12 2xl:gap-14 justify-between">
+      <div className="px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-6 md:py-8 flex flex-wrap gap-5 md:gap-8 lg:gap-10 xl:gap-12 2xl:gap-14 justify-between">
         <div className="flex flex-col max-w-[300px] gap-6">
           <div className="text-xl font-medium">About</div>
           <div className="text-sm text-justify text-neutral-400">
@@ -61,7 +61,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-4 border-t border-neutral-700 py-4 px-6 md:px-8 sm:flex-row sm:justify-between">
+      <div className="flex flex-col items-center gap-4 border-t border-neutral-700 py-4 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 sm:flex-row sm:justify-between w-full">
         <span className="text-sm text-neutral-400">Copyright @2024 ShopCart. All Rights Reserved</span>
         <img src={Payment} alt="Payment Methods" />
       </div>

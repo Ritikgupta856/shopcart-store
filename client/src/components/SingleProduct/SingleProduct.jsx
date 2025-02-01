@@ -46,7 +46,7 @@ import RelatedProducts from "./RelatedProduct/RelatedProducts";
 const SingleProduct = () => {
   const [product, setProduct] = useState();
   const { id } = useParams();
-  const {handleAddToCart}= useContext(AppContext);
+  const { handleAddToCart } = useContext(AppContext);
 
   useEffect(() => {
     fetchProduct();
@@ -74,15 +74,14 @@ const SingleProduct = () => {
     });
   };
 
-
   if (!product) return null;
 
   return (
-    <div className="py-5 px-5 mt-10 max-w-[1260] w-full sm:px-10">
-      <div className="">
+    <div className="min-h-screen py-4 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 mt-10 w-full">
+      <div className="max-w-[1260px] mx-auto">
         <div className="flex flex-col md:flex-row w-full gap-10">
           <div className="bg-neutral-100 flex w-fit md:w-[500px] h-[500px] shrink-0 rounded-2xl">
-            <img src={product.image}  alt={product.image} className="w-full" />
+            <img src={product.image} alt={product.image} className="w-full" />
           </div>
           <div className="flex flex-col gap-5">
             <span className="text-3xl font-bold">{product.name}</span>
@@ -113,7 +112,6 @@ const SingleProduct = () => {
                   handleAddToCart(product, quantity);
                   setQuantity(1);
                   toast.success('Product added successfully')
-                
                 }}
               >
                 <FaCartPlus size={20} />
@@ -138,10 +136,9 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-        <div className="mt-10">  
+        <div className="mt-10">
           <RelatedProducts productId={id} category={product.category} />
         </div>
-      
       </div>
     </div>
   );
