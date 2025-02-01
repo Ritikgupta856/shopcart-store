@@ -1,40 +1,43 @@
-
 import about from "../../assets/about.jpg";
 
 function AboutUs() {
   return (
-    <div className="container py-6 px-4 h-fit">
+    <div className="container py-12 px-6 bg-gray-50">
+ 
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+      
+        <div className="lg:w-1/2 relative overflow-hidden rounded-lg shadow-lg">
+          <img
+            src={about}
+            alt="ShopCart - Your Ultimate Audio & Tech Store"
+            className="w-full h-auto object-cover transform transition-transform duration-500 hover:scale-105"
+          />
+        </div>
 
-      <div className="flex flex-col items-center lg:flex-row sm:justify-center mb-10">
-        <img src={about} alt="" width={500}/>
-        <div className="flex flex-col">
-          <h2 className="text-3xl sm:text-4xl text-center font-medium uppercase mb-8">Who are we?</h2>
 
-          <div className="flex text-sm sm:text-medium flex-col font-medium text-justify gap-8 text-[navy]">
-          <p>
-            Welcome to ShopCart, your ultimate destination for style,
-            inspiration, and exceptional shopping experiences. We are dedicated
-            to providing a diverse and curated collection of products that cater
-            to your unique preferences and lifestyle.
+        <div className="lg:w-1/2 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center lg:text-left text-[navy] uppercase mb-6">
+            Who Are We?
+          </h2>
+          <p className="text-base sm:text-lg text-gray-700 text-justify">
+            Welcome to ShopCart, your ultimate destination for all your audio
+            and technology needs! We offer a wide range of products including
+            headphones, Bluetooth speakers, smartwatches, and more. With our
+            user-friendly website, you can easily shop from the comfort of your
+            home and have your favorite items delivered to you.
           </p>
-
-          <p>
-            At ShopCart, we believe that fashion goes beyond boundaries. Our
-            platform brings together a wide range of categories, including
-            clothing, accessories, home decor, beauty, and more. We aim to be
-            your go-to source for discovering the latest trends and timeless
-            classics, all in one convenient place.
+          <p className="text-base sm:text-lg text-gray-700 text-justify">
+            At ShopCart, we believe in delivering quality and innovation. Our
+            platform brings together a diverse collection of cutting-edge
+            gadgets and timeless classics, ensuring that you find exactly what
+            you need to elevate your lifestyle.
           </p>
-          <p>
-            With a passion for quality and style, we meticulously curate our
-            collection from a variety of sources. From established brands to
-            independent artisans, we handpick each item to ensure that it meets
-            our high standards of excellence. Every product featured on
-            ShopCart reflects our commitment to providing you with
-            exceptional craftsmanship, innovative design, and unparalleled
-            value.
+          <p className="text-base sm:text-lg text-gray-700 text-justify">
+            With a passion for excellence, we meticulously curate our products
+            from trusted brands and innovative creators. Every item on ShopCart
+            reflects our commitment to providing exceptional craftsmanship,
+            advanced technology, and unparalleled value.
           </p>
-          </div>
         </div>
       </div>
     </div>
