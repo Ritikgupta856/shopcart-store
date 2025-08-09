@@ -1,24 +1,26 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
-import Loader from "./components/Loader/Loader";
+import Loader from "./components/Loader";
 import AppProvider from "./Context/AppContext";
 import AuthProvider from "./Context/AuthContext";
+import Banner from "./components/Banner";
 
-const Home = lazy(() => import("../pages/Home"));
-const CategoryPage = lazy(() => import("./components/Category/CategoryPage/CategoryPage"));
-const SingleProduct = lazy(() => import("./components/SingleProduct/SingleProduct"));
-const Success = lazy(() => import("./components/Success/Success"));
-const AboutUs = lazy(() => import("./components/AboutUs/AboutUs"));
-const Newsletter = lazy(() => import("./components/Newsletter/Newsletter"));
-const Footer = lazy(() => import("./components/Footer/Footer"));
-const Header = lazy(() => import("./components/Header/Header"));
-const Login = lazy(() => import("../pages/Login"));
-const Register = lazy(() => import("../pages/Register"));
+import Home from "../pages/Home";
+import CategoryPage from "./components/CategoryPage";
+import SingleProduct from "./components/SingleProduct";
+import Success from "./components/Success";
+import AboutUs from "./components/AboutUs";
+import Newsletter from "./components/Newsletter";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 function AppContent() {
-  const location = useLocation(); 
-  const hideFooter = location.pathname === "/login" || location.pathname === "/register";
+  const location = useLocation();
+  const hideFooter =
+    location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <>
@@ -26,6 +28,7 @@ function AppContent() {
       <AuthProvider>
         <AppProvider>
           <Suspense fallback={<Loader />}>
+            <Banner />
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />

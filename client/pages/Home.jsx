@@ -1,11 +1,11 @@
 import { useEffect, useContext, useState } from "react";
 import axios from "axios";
-import Herobanner from "@/components/HeroBanner/Herobanner";
-import Category from "../src/components/Category/Category";
-import Products from "../src/components/Products/Products";
+import Herobanner from "@/components/Herobanner";
+import Category from "../src/components/Category";
+import Products from "../src/components/ProductGrid";
 import { AppContext } from "../src/Context/AppContext";
-import CategorySkeleton from "../src/components/Skeleton/CategorySkeleton";
-import ProductsSkeleton from "../src/components/Skeleton/ProductSkeleton";
+import CategorySkeleton from "../src/components/CategorySkeleton";
+import ProductsSkeleton from "../src/components/ProductSkeleton";
 
 const Home = () => {
   const { categories, setCategories, products, setProducts } =
@@ -49,7 +49,11 @@ const Home = () => {
     <main>
       <Herobanner />
       {isLoading ? <CategorySkeleton /> : <Category categories={categories} />}
-      {isLoading ? <ProductsSkeleton headingText="Popular Products" /> :  <Products products={products} headingText="Popular Products" />}
+      {isLoading ? (
+        <ProductsSkeleton headingText="Popular Products" />
+      ) : (
+        <Products products={products} headingText="Popular Products" />
+      )}
     </main>
   );
 };
