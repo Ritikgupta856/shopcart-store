@@ -16,7 +16,7 @@ const CategoryPage = () => {
       setError(null);
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/allproducts`
+          `${import.meta.env.VITE_SERVER_URL}/api/allproducts`
         );
 
         const filteredProducts = response.data.filter(

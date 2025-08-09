@@ -24,7 +24,7 @@ const Cart = ({ setshowCart }) => {
       const stripe = await stripePromise;
 
       const res = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/create-checkout-session`,
+        `${import.meta.env.VITE_SERVER_URL}/api/create-checkout-session`,
         {
           products: cartItems,
           user: currentUser?.user?.fullname,

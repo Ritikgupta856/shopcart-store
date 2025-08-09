@@ -21,7 +21,7 @@ const Home = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/allcategories`
+        `${import.meta.env.VITE_SERVER_URL}/api/allcategories`
       );
       setCategories(response.data);
     } catch (error) {
@@ -35,7 +35,7 @@ const Home = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/allproducts`
+        `${import.meta.env.VITE_SERVER_URL}/api/allproducts`
       );
       setProducts(response.data);
     } catch (error) {
