@@ -2,15 +2,20 @@ import { Order } from "../models/order.model.js";
 
 export const getOrders = async (req, res) => {
   try {
-    let orders = await Order.find({});
-    let totalRevenue = 0;
-    let paid_orders = await Order.find({ paid: true });
-    paid_orders.forEach(order => {
-      totalRevenue += order.totalAmount;
+    const orders = await Order.find({});
+
+    const totalRevenue = await Order.aggregate([
+      { $match: { paid: true } },
+      { $group: { _id: null, total: { $sum: "$totalAmount" } } }
+    ]);
+
+    res.json({
+      success: true,
+      orders,
+      totalRevenue: totalRevenue.length > 0 ? totalRevenue[0].total : 0
     });
-    res.json({ orders, totalRevenue });
   } catch (error) {
-    console.log("Error Fetching orders:", error);
-    res.status(500).json({ error: "Error fetching orders" });
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };

@@ -2,37 +2,77 @@ import { Product } from "../models/product.model.js";
 
 export const addProduct = async (req, res) => {
   try {
-    const newProduct = new Product({
-      name: req.body.name,
-      description: req.body.description,
-      image: req.body.image,
-      price: req.body.price,
-      category: req.body.category,
-    });
+    const { name, slug, description, image, price, category } = req.body;
+
+    if (!name || !slug || !description || !image || !price || !category) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    const newProduct = new Product({ name, slug, description, image, price, category });
     await newProduct.save();
-    console.log(newProduct);
-    res.json({ success: 1, name: req.body.name });
+
+    res.status(201).json({ success: true, product: newProduct });
   } catch (error) {
-    console.log("Error adding product:", error);
+    console.error("Error adding product:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 export const removeProduct = async (req, res) => {
   try {
-    const productId = req.body.id;
-    const deletedProduct = await Product.findOneAndDelete({ _id: productId });
-    console.log(deletedProduct);
-    res.json({ success: true, name: deletedProduct.name });
+    const { id } = req.params; 
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    res.json({ success: true, product: deletedProduct });
   } catch (error) {
     console.error("Error removing product:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
+
 export const getAllProducts = async (req, res) => {
   try {
-    let products = await Product.find({});
-    res.json(products);
+    let { page = 1, limit = 10 } = req.query; 
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    const products = await Product.find({})
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const total = await Product.countDocuments();
+
+    res.json({
+      success: true,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      products
+    });
   } catch (error) {
-    console.log("Error Fetching products:", error);
+    console.error("Error fetching products:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getProductBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const product = await Product.findOne({ slug });
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    res.json({ success: true, product });
+  } catch (error) {
+    console.error("Error fetching product by slug:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
