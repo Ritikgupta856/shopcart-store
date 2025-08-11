@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 const Category = ({ categories }) => {
   const navigate = useNavigate();
 
+  console.log(categories)
+
   return (
     <section
       id="category"
@@ -13,7 +15,7 @@ const Category = ({ categories }) => {
           <div
             key={item._id}
             className="bg-black cursor-pointer overflow-hidden"
-            onClick={() => navigate(`/category/${item.name.toLowerCase()}`)}
+            onClick={() => navigate(`/category/${item.slug}`)}
           >
             <img
               src={item.image}

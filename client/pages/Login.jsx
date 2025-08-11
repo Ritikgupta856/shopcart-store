@@ -1,13 +1,19 @@
-import { useContext, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { AuthContext } from "../src/Context/AuthContext";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock } from "lucide-react";
+import useAuthStore from "@/store/useAuthStore";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +23,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { setCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser } = useAuthStore();
 
   const handleChange = (e) => {
     setFormData((prevData) => ({
@@ -97,11 +103,7 @@ const Login = () => {
                 />
               </div>
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
             <div className="text-center text-sm">

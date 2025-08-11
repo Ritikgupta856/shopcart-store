@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { CgShoppingCart } from "react-icons/cg";
 import Search from "./Search";
 import Cart from "./Cart";
-import { useContext, useState } from "react";
-import { AppContext } from "../Context/AppContext";
+import { useState } from "react";
+import useCartStore from "../store/useCartStore";
 import { TbSearch } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import UserMenu from "./UserMenu";
-import { AuthContext } from "../Context/AuthContext";
+import useAuthStore from "../store/useAuthStore";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -22,13 +22,13 @@ const Header = () => {
   const [showCart, setshowCart] = useState(false);
   const [showSearch, setshowSearch] = useState(false);
   const [showMenu, setshowMenu] = useState(false);
-  const { cartCount } = useContext(AppContext);
-  const { currentUser } = useContext(AuthContext);
+  const { cartCount } = useCartStore();
+  const { currentUser } = useAuthStore();
 
   const navigate = useNavigate();
 
   const handleCategoryClick = (category) => {
-    navigate(`/category/${category.toLowerCase()}`, { replace: true });
+    navigate(`/category/${category}`, { replace: true });
   };
 
   return (

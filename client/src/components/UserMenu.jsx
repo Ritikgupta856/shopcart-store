@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../Context/AuthContext";
+import useAuthStore from "../store/useAuthStore";
 
 const UserMenu = ({ setshowMenu }) => {
-  const { currentUser, logOut } = useContext(AuthContext);
+  const { currentUser, logOut } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logOut();
     setshowMenu(false);
+    navigate("/"); // navigation after logout
   };
 
   return (

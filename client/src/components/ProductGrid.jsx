@@ -1,4 +1,4 @@
-import Product from "./Product";
+import Product from "../../pages/Product";
 
 const ProductGrid = ({ products, innerPage, headingText, compact }) => {
   return (

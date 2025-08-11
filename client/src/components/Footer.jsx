@@ -62,7 +62,7 @@ const Footer = () => {
 
       <div className="flex flex-col items-center gap-4 border-t border-neutral-700 py-4 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 sm:flex-row sm:justify-between w-full">
         <span className="text-sm text-neutral-400">
-          Copyright @2024 ShopCart. All Rights Reserved
+          Copyright &copy; {new Date().getFullYear()} ShopCart. All Rights Reserved
         </span>
         <img src="/payments.png" alt="Payment Methods" />
       </div>

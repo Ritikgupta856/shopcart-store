@@ -1,10 +1,9 @@
 import { MdClose } from "react-icons/md";
-import { useContext } from "react";
-import { AppContext } from "../Context/AppContext";
+import useCartStore from "@/store/useCartStore";
 
 const CartItem = () => {
   const { cartItems, handleRemoveFromCart, handleCartProductQuantity } =
-    useContext(AppContext);
+    useCartStore();
   return (
     <div className="flex-grow overflow-y-auto">
       {cartItems?.map((item) => (

@@ -1,11 +1,11 @@
+import useProducts from "@/hooks/useProducts";
 import { useContext, useState } from "react";
 
 import { MdClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../Context/AppContext";
 
 const Search = ({ setshowSearch }) => {
-  const { products } = useContext(AppContext);
+  const { products } = useProducts();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Search = ({ setshowSearch }) => {
           <div
             key={product._id}
             onClick={() => {
-              navigate("/product/" + product._id);
+              navigate("/product/" + product.slug);
               setshowSearch(false);
             }}
             className="flex items-center cursor-pointer truncate p-4 border-b hover:bg-gray-50 gap-4"

@@ -7,13 +7,11 @@ import {
   FaCartPlus,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
-
-import { useContext, useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "@/Context/AppContext";
 import axios from "axios";
-import RelatedProducts from "./RelatedProducts";
+import RelatedProducts from "../src/components/RelatedProducts";
+import useCartStore from "@/store/useCartStore";
 
 const socialMediaLinks = [
   {
@@ -45,20 +43,19 @@ const socialMediaLinks = [
 
 const SingleProduct = () => {
   const [product, setProduct] = useState();
-  const { id } = useParams();
-  const { handleAddToCart } = useContext(AppContext);
+  const { slug } = useParams();
+  const { handleAddToCart } = useCartStore();
 
   useEffect(() => {
     fetchProduct();
-  }, [id]);
+  }, [slug]);
 
   const fetchProduct = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/allproducts`
+        `${import.meta.env.VITE_SERVER_URL}/api/products/${slug}`
       );
-      const selectedProduct = response.data.find((item) => item._id === id);
-      setProduct(selectedProduct);
+      setProduct(response.data.product);
     } catch (error) {
       console.log(error);
     }
@@ -140,7 +137,7 @@ const SingleProduct = () => {
         </div>
       </div>
       <div className="mt-10">
-        <RelatedProducts productId={id} category={product.category} />
+        <RelatedProducts productId={product._id} category={product.category} />
       </div>
     </div>
   );

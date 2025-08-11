@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-const Product = ({ id, data }) => {
+const Product = ({ data }) => {
   return (
-    <Link to={`/product/${id}`} className="block w-full max-w-[300px]">
+    <Link to={`/product/${data.slug}`} className="block w-full max-w-[300px]">
       <div className="relative w-full h-60 md:h-72 rounded-2xl overflow-hidden bg-gray-100 p-4 flex items-center justify-center">
         <img
           src={data?.image}

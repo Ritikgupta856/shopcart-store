@@ -12,9 +12,9 @@ const RelatedProducts = ({ productId, category }) => {
   const fetchRelatedProducts = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/allproducts`
+        `${import.meta.env.VITE_SERVER_URL}/api/products`
       );
-      const allProducts = response.data;
+      const allProducts = response.data.products;
 
       const filteredProducts = allProducts.filter(
         (product) => product._id !== productId && product.category === category

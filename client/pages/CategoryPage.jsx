@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Products from "./ProductGrid";
+import Products from "../src/components/ProductGrid";
 import Loader from "@/components/Loader";
 
-const CategoryPage = () => {
+const CategoryGrid = () => {
   const [products, setProducts] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { name } = useParams();
+  const { slug } = useParams();
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
+        // Fetch products by category slug directly
         const response = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/api/allproducts`
+          `${import.meta.env.VITE_SERVER_URL}/api/categories/${slug}`
         );
-
-        const filteredProducts = response.data.filter(
-          (product) => product.category.toLowerCase() === name.toLowerCase()
-        );
-
-        setProducts(filteredProducts);
+        setProducts(response.data.products || []);
+        setCategoryName(response.data.categoryName || slug);
       } catch (err) {
         setError("Failed to fetch products. Please try again.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchProducts();
-  }, [name]);
+  }, [slug]);
 
   return (
     <div className="min-h-screen">
@@ -43,10 +40,10 @@ const CategoryPage = () => {
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
       ) : products.length > 0 ? (
-        <Products products={products} innerPage={false} headingText={name} />
+        <Products products={products} innerPage={false} headingText={categoryName} />
       ) : (
         <div>
-          <Products products={[]} innerPage={false} headingText={name} />
+          <Products products={[]} innerPage={false} headingText={categoryName} />
           <p className="text-center text-xl">
             No products found in this category.
           </p>
@@ -56,4 +53,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default CategoryGrid;

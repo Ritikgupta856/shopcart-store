@@ -1,17 +1,17 @@
 import { MdClose } from "react-icons/md";
 import { BsCartX } from "react-icons/bs";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CartItem from "./CartItem";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../Context/AppContext";
-import { AuthContext } from "../Context/AuthContext";
+import useCartStore from "../store/useCartStore";
+import useAuthStore from "../store/useAuthStore";
 
 const Cart = ({ setshowCart }) => {
   const [loading, setLoading] = useState(false);
-  const { cartItems, cartSubTotal } = useContext(AppContext);
-  const { currentUser } = useContext(AuthContext);
+  const { cartItems, cartSubTotal, handleAddToCart, handleRemoveFromCart, handleCartProductQuantity, setShowCart } = useCartStore();
+  const { currentUser } = useAuthStore();
   const navigate = useNavigate();
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
