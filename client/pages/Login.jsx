@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -14,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock } from "lucide-react";
 import useAuthStore from "@/store/useAuthStore";
+import { useState } from "react";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { setCurrentUser } = useAuthStore();
+  const { setAuth } = useAuthStore();
 
   const handleChange = (e) => {
     setFormData((prevData) => ({
@@ -40,14 +40,15 @@ const Login = () => {
         `${import.meta.env.VITE_SERVER_URL}/api/login`,
         formData
       );
+
       const { success, token, user } = response.data;
+
       if (success) {
         toast.success("Login successful");
-        setCurrentUser({
-          user,
-          token,
-        });
-        localStorage.setItem("currentUser", JSON.stringify({ user, token }));
+
+        // ✅ Save user + token directly in Zustand
+        setAuth(user, token);
+
         navigate("/");
       }
     } catch (error) {

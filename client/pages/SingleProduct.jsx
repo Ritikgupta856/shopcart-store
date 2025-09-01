@@ -77,7 +77,7 @@ const SingleProduct = () => {
 
   return (
     <div className="min-h-screen py-4 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 mt-10 w-full">
-      <div className="max-w-[1260px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row w-full gap-10">
           <div className="bg-neutral-100 flex w-fit md:w-[500px] h-[500px] shrink-0 rounded-2xl">
             <img src={product.image} alt={product.image} className="w-full" />
@@ -120,7 +120,7 @@ const SingleProduct = () => {
             <hr className="mt-5" />
             <div className="flex flex-col gap-2 mt-2">
               <span className="text-bold">
-                Category :<span> {product.category} </span>
+                Category :<span> {product.category.name} </span>
               </span>
               <span className="flex flex-row gap-2 items-center">
                 Share:
@@ -135,9 +135,12 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="mt-10">
-        <RelatedProducts productId={product._id} category={product.category} />
+        <div className="mt-12">
+          <RelatedProducts
+            productId={product._id}
+            categoryId={product.category._id}
+          />
+        </div>
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ const CategoryGrid = () => {
           <Loader />
         </p>
       ) : error ? (
-        <p className="text-center text-red-500">{error}</p>
+        <p className="text-center text-red-500">No products Found</p>
       ) : products.length > 0 ? (
         <Products products={products} innerPage={false} headingText={categoryName} />
       ) : (

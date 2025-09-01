@@ -1,22 +1,17 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 const useAuthStore = create(
   persist(
     (set) => ({
-      currentUser: {
-        user: null,
-        token: "",
-      },
-      setCurrentUser: (userObj) => set({ currentUser: userObj }),
-      logOut: () => {
-        set({ currentUser: { user: null, token: "" } });
-        localStorage.removeItem("currentUser");
-      },
+      user: null,
+      token: "",
+      setAuth: (user, token) => set({ user, token }),
+      logOut: () => set({ user: null, token: "" }),
     }),
     {
-      name: "currentUser",
-      partialize: (state) => ({ currentUser: state.currentUser }),
+      name: "auth-store",
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

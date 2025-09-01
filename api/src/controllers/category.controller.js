@@ -1,4 +1,5 @@
 import { Category } from "../models/category.model.js";
+import { Product } from "../models/product.model.js";
 
 export const addCategory = async (req, res) => {
   try {
@@ -57,6 +58,24 @@ export const getCategoryBySlug = async (req, res) => {
     res.json({ success: true, category });
   } catch (error) {
     console.error("Error fetching category by slug:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+export const getProductsByCategorySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const category = await Category.findOne({ slug });
+
+    if (!category) {
+      return res.status(404).json({ success: false, message: "Category not found" });
+    }
+
+    const products = await Product.find({ category: category._id });
+    res.json({ success: true, products });
+  } catch (error) {
+    console.error("Error fetching products by category slug:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

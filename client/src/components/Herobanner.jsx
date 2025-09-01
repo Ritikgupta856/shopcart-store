@@ -7,33 +7,33 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 const slides = [
   {
     image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=100&w=3840",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=1200&fm=webp",
     title: "Premium Headphones",
     description:
       "Immerse yourself in studio-quality sound with our premium collection",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1508243771214-6e95d137426b?auto=format&fit=crop&q=100&w=3840",
+      "https://images.unsplash.com/photo-1508243771214-6e95d137426b?auto=format&fit=crop&q=80&w=1200&fm=webp",
     title: "Smart Watches",
     description: "Elevate your lifestyle with cutting-edge wearable technology",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&q=100&w=3840",
+      "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&q=80&w=1200&fm=webp",
     title: "Home Theatre Systems",
     description: "Experience cinematic excellence in the comfort of your home",
   },
   {
     image:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=100&w=3840",
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=1200&fm=webp",
     title: "Wireless Earbuds",
     description: "Uncompromised sound quality meets ultimate portability",
   },
 
   {
     image:
-      "https://images.unsplash.com/photo-1420161900862-9a86fa1f5c79?auto=format&fit=crop&q=100&w=3840",
+      "https://images.unsplash.com/photo-1420161900862-9a86fa1f5c79?auto=format&fit=crop&q=80&w=1200&fm=webp",
     title: "Bluetooth Speakers",
     description: "Premium audio engineering meets sophisticated design",
   },
@@ -77,7 +77,7 @@ const HeroBanner = () => {
     <div className="hero-slider">
       <Slider {...settings}>
         {slides.map((slide, index) => (
-          <div key={index} className="relative h-[90vh]">
+          <div key={index} className="relative h-[95vh]">
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{

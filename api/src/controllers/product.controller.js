@@ -43,7 +43,8 @@ export const getAllProducts = async (req, res) => {
 
     const products = await Product.find({})
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
+      .populate("category", "_id name slug");
 
     const total = await Product.countDocuments();
 
@@ -64,7 +65,7 @@ export const getAllProducts = async (req, res) => {
 export const getProductBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
-    const product = await Product.findOne({ slug });
+    const product = await Product.findOne({ slug }).populate("category", "_id name slug");
 
     if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });

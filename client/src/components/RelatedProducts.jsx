@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Products from "./ProductGrid";
 
-const RelatedProducts = ({ productId, category }) => {
+const RelatedProducts = ({ productId, categoryId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
+
+  console.log(categoryId)
 
   useEffect(() => {
     fetchRelatedProducts();
-  }, [productId, category]);
+  }, [productId, categoryId]);
 
   const fetchRelatedProducts = async () => {
     try {
@@ -17,7 +19,7 @@ const RelatedProducts = ({ productId, category }) => {
       const allProducts = response.data.products;
 
       const filteredProducts = allProducts.filter(
-        (product) => product._id !== productId && product.category === category
+        (product) => product._id !== productId && product.category._id === categoryId
       );
 
       const relatedProductsSubset = filteredProducts.slice(0, 4);

@@ -27,8 +27,17 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const handleCategoryClick = (category) => {
-    navigate(`/category/${category}`, { replace: true });
+  // Define categories with both name and slug
+  const categories = [
+    { name: "Headphones", slug: "headphones" },
+    { name: "Smart Watches", slug: "smart-watches" },
+    { name: "Bluetooth Speakers", slug: "bluetooth-speakers" },
+    { name: "Wireless Earbuds", slug: "wireless-earbuds" },
+    { name: "Home Theatre", slug: "home-theatre" },
+  ];
+
+  const handleCategoryClick = (slug) => {
+    navigate(`/category/${slug}`, { replace: true });
   };
 
   return (
@@ -72,20 +81,14 @@ const Header = () => {
                   <NavigationMenuTrigger>Products</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:grid-cols-2">
-                      {[
-                        "Headphones",
-                        "Smart Watches",
-                        "Bluetooth Speakers",
-                        "Wireless Earbuds",
-                        "Home Theatre",
-                      ].map((item) => (
+                      {categories.map((category) => (
                         <li
-                          key={item}
-                          onClick={() => handleCategoryClick(item)}
+                          key={category.slug}
+                          onClick={() => handleCategoryClick(category.slug)}
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer"
                         >
                           <NavigationMenuLink asChild>
-                            <span>{item}</span>
+                            <span>{category.name}</span>
                           </NavigationMenuLink>
                         </li>
                       ))}
@@ -116,7 +119,7 @@ const Header = () => {
             )}
           </span>
           <div className="relative">
-            {currentUser.user ? (
+            {currentUser?.user ? (
               <span
                 onClick={() => setshowMenu(!showMenu)}
                 className="relative text-white bg-black h-8 w-8 rounded-full flex items-center justify-center font-semibold cursor-pointer"

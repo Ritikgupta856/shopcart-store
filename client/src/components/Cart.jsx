@@ -11,7 +11,7 @@ import useAuthStore from "../store/useAuthStore";
 const Cart = ({ setshowCart }) => {
   const [loading, setLoading] = useState(false);
   const { cartItems, cartSubTotal, handleAddToCart, handleRemoveFromCart, handleCartProductQuantity, setShowCart } = useCartStore();
-  const { currentUser } = useAuthStore();
+  const { user } = useAuthStore();
   const navigate = useNavigate();
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
@@ -25,7 +25,7 @@ const Cart = ({ setshowCart }) => {
         `${import.meta.env.VITE_SERVER_URL}/api/create-checkout-session`,
         {
           products: cartItems,
-          user: currentUser?.user?.fullname,
+          user: user?.fullname,
           totalAmount: cartSubTotal,
         }
       );
@@ -90,7 +90,7 @@ const Cart = ({ setshowCart }) => {
                   <div className="px-4 py-3">
                     <button
                       onClick={() => {
-                        if (!currentUser.user) {
+                        if (!user) {
                           setshowCart(false);
                           navigate("/login");
                         } else {
