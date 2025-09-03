@@ -6,20 +6,24 @@ const orderSchema = mongoose.Schema(
       type: Object,
       required: true,
     },
+
     user: {
-      type: String,
-      required:true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
+
     totalAmount: {
       type: Number,
       required: true,
     },
-    paid: {
-      type: Boolean,
-      default: false,
+
+    status: {
+      type: String,
+      enum: ["pending", "paid", "failed", "cancelled"],
+      default: "pending",
     },
   },
-
   {
     timestamps: true,
   }

@@ -25,7 +25,7 @@ const Cart = ({ setshowCart }) => {
         `${import.meta.env.VITE_SERVER_URL}/api/create-checkout-session`,
         {
           products: cartItems,
-          user: user?.fullname,
+          user: user?._id,
           totalAmount: cartSubTotal,
         }
       );

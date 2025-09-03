@@ -43,26 +43,64 @@ export const stripeWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   let event;
+
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
-    console.log(`Error message: ${err.message}`);
-    res.status(400).send(`Webhook Error: ${err.message}`);
-    return;
+    console.log(`Error verifying webhook: ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    const orderId = session.metadata.orderId;
-    try {
-      const order = await Order.findByIdAndUpdate(orderId, { paid: true }, { new: true });
-      console.log("Updated Order:", order);
-    } catch (error) {
-      console.error("Error updating order:", error);
-      res.status(500).send("Error updating order");
-      return;
+
+  try {
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        const orderId = session.metadata.orderId;
+
+        await Order.findByIdAndUpdate(
+          orderId,
+          { status: "paid" },
+          { new: true }
+        );
+    
+        break;
+      }
+
+      case "checkout.session.expired": {
+        const session = event.data.object;
+        const orderId = session.metadata.orderId;
+
+        await Order.findByIdAndUpdate(
+          orderId,
+          { status: "cancelled" },
+          { new: true }
+        );
+   
+        break;
+      }
+
+      case "payment_intent.payment_failed": {
+        const paymentIntent = event.data.object;
+        const orderId = paymentIntent.metadata?.orderId;
+
+        if (orderId) {
+          await Order.findByIdAndUpdate(
+            orderId,
+            { status: "failed" },
+            { new: true }
+          );
+        }
+        break;
+      }
+
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
     }
-  } else {
-    console.log(`Unhandled event type: ${event.type}`);
+
+    res.send();
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).send("Error updating order");
   }
-  res.send();
 };
+
