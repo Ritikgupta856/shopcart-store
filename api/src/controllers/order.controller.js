@@ -2,17 +2,12 @@ import { Order } from "../models/order.model.js";
 
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({});
-
-    const totalRevenue = await Order.aggregate([
-      { $match: { paid: true } },
-      { $group: { _id: null, total: { $sum: "$totalAmount" } } }
-    ]);
+    const orders = await Order.find({}).populate("user", "fullname email");
 
     res.json({
       success: true,
       orders,
-      totalRevenue: totalRevenue.length > 0 ? totalRevenue[0].total : 0
+      totalRevenue: orders.reduce((acc, order) => acc + order.totalAmount, 0)
     });
   } catch (error) {
     console.error("Error fetching orders:", error);
