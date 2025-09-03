@@ -42,18 +42,11 @@ export const getAllProducts = async (req, res) => {
     limit = parseInt(limit);
 
     const products = await Product.find({})
-      .skip((page - 1) * limit)
-      .limit(limit)
       .populate("category", "_id name slug");
 
-    const total = await Product.countDocuments();
 
     res.json({
       success: true,
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
       products
     });
   } catch (error) {

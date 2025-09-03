@@ -44,9 +44,8 @@ const Login = () => {
       const { success, token, user } = response.data;
 
       if (success) {
-        toast.success("Login successful");
+        toast.success("Login successfull");
 
-        // ✅ Save user + token directly in Zustand
         setAuth(user, token);
 
         navigate("/");
