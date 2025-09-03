@@ -15,16 +15,10 @@ const app = express();
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cors());
-app.use(
-  express.json({
-    limit: "5mb",
-    verify: (req, res, buf) => {
-      req.rawBody = buf.toString();
-    },
-  })
-);
+app.use("/api/webhook", express.raw({ type: "application/json" }));
 
-app.use(cors());
+
+app.use(express.json({ limit: "5mb" }));
 
 // database connection
 connectDB();
