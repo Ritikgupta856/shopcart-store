@@ -10,7 +10,7 @@ import useAuthStore from "../store/useAuthStore";
 
 const Cart = ({ setshowCart }) => {
   const [loading, setLoading] = useState(false);
-  const { cartItems, cartSubTotal, handleAddToCart, handleRemoveFromCart, handleCartProductQuantity, setShowCart } = useCartStore();
+  const { cartItems, cartSubTotal } = useCartStore();
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);

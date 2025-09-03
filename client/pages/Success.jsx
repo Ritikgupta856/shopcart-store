@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Check, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import useCartStore from "@/store/useCartStore";
 
 export default function Success() {
+  const resetCart = useCartStore((state) => state.resetCart);
+
+  useEffect(() => {
+    resetCart();
+  }, [resetCart]);
+
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-white">
       <div className="w-full max-w-md p-8 rounded-2xl space-y-6">
