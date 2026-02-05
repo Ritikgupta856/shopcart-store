@@ -24,7 +24,7 @@ app.use(express.json({ limit: "5mb" }));
 connectDB();
 
 app.get("/", (req, res) => {
-  res.send("Express app is running");
+  res.send("Server is running on port 8000");
 });
 
 app.use("/temp", express.static("/public/temp"));
