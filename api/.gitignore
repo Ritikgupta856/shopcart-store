@@ -1,2 +1,22 @@
 node_modules/
 .env
+.env.local
+.env.*.local
+
+# SSH keys
+id_rsa
+id_rsa.pub
+*.pem
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
