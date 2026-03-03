@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Products from "../src/components/ProductGrid";
+import Products from "../components/ProductGrid";
 import Loader from "@/components/Loader";
 
 const CategoryGrid = () => {

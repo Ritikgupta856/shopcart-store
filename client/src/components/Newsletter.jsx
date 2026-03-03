@@ -1,13 +1,6 @@
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa";
-
 const Newsletter = () => {
   return (
-    <div className="h-[70vh] flex items-center py-4 px-4 w-full bg-newsletter bg-cover">
+    <div className="h-[60vh] flex items-center py-4 px-4 w-full bg-newsletter bg-cover">
       <div className="flex flex-col items-center mx-auto my-0 gap-4">
         <div className="uppercase text-neutral-500 font-medium">Newsletter</div>
         <span className="uppercase text-medium sm:text-2xl font-medium">
@@ -28,23 +21,7 @@ const Newsletter = () => {
           Will be used in accordance with Privacy Policy{" "}
         </span>
 
-        <span className="flex gap-4">
-          <div className="rounded-full bg-black p-2 text-white hover:scale-110 cursor-pointer">
-            <FaFacebookF size={14} />
-          </div>
 
-          <div className="rounded-full bg-black p-2 text-white hover:scale-110 cursor-pointer">
-            <FaTwitter size={14} />
-          </div>
-
-          <div className="rounded-full bg-black p-2 text-white hover:scale-110 cursor-pointer">
-            <FaInstagram size={14} />
-          </div>
-
-          <div className="rounded-full bg-black p-2 text-white hover:scale-110 cursor-pointer">
-            <FaLinkedinIn size={14} />
-          </div>
-        </span>
       </div>
     </div>
   );

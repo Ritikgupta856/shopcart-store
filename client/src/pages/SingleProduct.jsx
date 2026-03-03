@@ -10,8 +10,9 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import RelatedProducts from "../src/components/RelatedProducts";
+
 import useCartStore from "@/store/useCartStore";
+import RelatedProducts from "@/components/RelatedProducts";
 
 const socialMediaLinks = [
   {

@@ -1,10 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Category = ({ categories }) => {
-  const navigate = useNavigate();
-
-  console.log(categories)
-
   return (
     <section
       id="category"
@@ -12,17 +8,17 @@ const Category = ({ categories }) => {
     >
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 my-10 cursor-pointer">
         {categories?.map((item) => (
-          <div
+          <Link
             key={item._id}
-            className="bg-black cursor-pointer overflow-hidden"
-            onClick={() => navigate(`/category/${item.slug}`)}
+            to={`/category/${item.slug}`}
+            className="bg-black cursor-pointer overflow-hidden block"
           >
             <img
               src={item.image}
-              alt=""
+              alt={item.name}
               className="transition duration-300 ease-in-out hover:scale-[1.2]"
             />
-          </div>
+          </Link>
         ))}
       </div>
     </section>

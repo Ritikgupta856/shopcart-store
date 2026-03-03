@@ -76,7 +76,7 @@
 }
 
 .hero-slider {
-  @apply relative h-[75vh] w-full overflow-hidden mt-5;
+  @apply relative w-full overflow-hidden;
 }
 
 .hero-slider .slick-dots {

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { CgShoppingCart } from "react-icons/cg";
 import Search from "./Search";
 import Cart from "./Cart";
@@ -57,23 +57,23 @@ const Header = () => {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <a
+                    <Link
                       className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      href="/"
+                      to="/"
                     >
                       Home
-                    </a>
+                    </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <a
+                    <Link
                       className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      href="/about-us"
+                      to="/about-us"
                     >
                       About Us
-                    </a>
+                    </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 

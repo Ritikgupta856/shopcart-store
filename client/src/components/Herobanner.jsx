@@ -1,4 +1,5 @@
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Button } from "./ui/button";
@@ -74,10 +75,10 @@ const HeroBanner = () => {
   };
 
   return (
-    <div className="hero-slider">
+    <div className="hero-slider relative w-full overflow-hidden">
       <Slider {...settings}>
         {slides.map((slide, index) => (
-          <div key={index} className="relative h-[95vh]">
+          <div key={index} className="relative h-[calc(100vh-160px)]">
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
@@ -86,7 +87,7 @@ const HeroBanner = () => {
             >
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <h1 className="mb-4  text-4xl sm:text-6xl font-bold tracking-tight">
+                  <h1 className="mb-4 text-4xl sm:text-6xl font-bold tracking-tight">
                     {slide.title}
                   </h1>
                   <p className="mb-8 text-xl sm:text-2xl font-light">
@@ -94,16 +95,18 @@ const HeroBanner = () => {
                   </p>
                   <div className="flex items-center justify-center gap-4">
                     <Button
+                      asChild
                       variant="outline"
                       className="bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
                     >
-                      Shop Now
+                      <Link to="/category/headphones">Shop Now</Link>
                     </Button>
                     <Button
+                      asChild
                       variant="outline"
                       className="bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
                     >
-                      Read More
+                      <Link to="/about-us">Read More</Link>
                     </Button>
                   </div>
                 </div>
