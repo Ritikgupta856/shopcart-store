@@ -21,7 +21,7 @@ app.use("/api/webhook", express.raw({ type: "application/json" }));
 app.use(express.json({ limit: "5mb" }));
 
 // database connection
-connectDB();
+connectDB().catch((err) => console.error("DB connection failed", err));
 
 
 app.get("/", (req, res) => {
@@ -38,8 +38,6 @@ app.get("/health", (_req, res) => {
 });
 
 
-app.use("/temp", express.static("/public/temp"));
-
 // Route mounting
 app.use("/api", authRoutes);
 app.use("/api", productRoutes);
@@ -51,7 +49,11 @@ app.use("/api", stripeRoutes);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-// Start server
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`[server] Listening on port ${process.env.PORT || 3000}`);
-});
+// Start server (skipped on Vercel, which invokes the exported app directly)
+if (!process.env.VERCEL) {
+  app.listen(process.env.PORT || 3000, () => {
+    console.log(`[server] Listening on port ${process.env.PORT || 3000}`);
+  });
+}
+
+export default app;
