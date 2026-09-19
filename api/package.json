@@ -9,15 +9,17 @@
   },
   "scripts": {
     "start": "node src/index.js",
-   "dev": "node  --watch --env-file .env src/index.js"
+    "dev": "node  --watch --env-file .env src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/backend": "^3.18.1",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.7.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",

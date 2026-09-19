@@ -1,15 +1,23 @@
 import { Category } from "../models/category.model.js";
 import { Product } from "../models/product.model.js";
+import { deleteFromCloudinary } from "../utills/cloudinary.js";
 
 export const addCategory = async (req, res) => {
   try {
-    const { name, slug, image } = req.body;
+    const { name, slug, image, shortDescription, displayOrder, isActive } = req.body;
 
     if (!name || !slug || !image) {
       return res.status(400).json({ success: false, message: "Name, slug, and image are required" });
     }
 
-    const newCategory = new Category({ name, slug, image });
+    const newCategory = new Category({
+      name,
+      slug,
+      image,
+      shortDescription: shortDescription || "",
+      displayOrder: displayOrder !== undefined ? Number(displayOrder) : 0,
+      isActive: isActive !== undefined ? isActive : true,
+    });
     await newCategory.save();
 
     res.status(201).json({ success: true, category: newCategory });
@@ -28,6 +36,8 @@ export const removeCategory = async (req, res) => {
       return res.status(404).json({ success: false, message: "Category not found" });
     }
 
+    await deleteFromCloudinary(deletedCategory.image);
+
     res.json({ success: true, category: deletedCategory });
   } catch (error) {
     console.error("Error removing category:", error);
@@ -37,7 +47,7 @@ export const removeCategory = async (req, res) => {
 
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}).sort({ displayOrder: 1, createdAt: 1 });
     res.json({ success: true, categories });
   } catch (error) {
     console.error("Error fetching categories:", error);

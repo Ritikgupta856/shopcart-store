@@ -4,118 +4,92 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Button } from "./ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-
-const slides = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=1200&fm=webp",
-    title: "Premium Headphones",
-    description:
-      "Immerse yourself in studio-quality sound with our premium collection",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1508243771214-6e95d137426b?auto=format&fit=crop&q=80&w=1200&fm=webp",
-    title: "Smart Watches",
-    description: "Elevate your lifestyle with cutting-edge wearable technology",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&q=80&w=1200&fm=webp",
-    title: "Home Theatre Systems",
-    description: "Experience cinematic excellence in the comfort of your home",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=1200&fm=webp",
-    title: "Wireless Earbuds",
-    description: "Uncompromised sound quality meets ultimate portability",
-  },
-
-  {
-    image:
-      "https://images.unsplash.com/photo-1420161900862-9a86fa1f5c79?auto=format&fit=crop&q=80&w=1200&fm=webp",
-    title: "Bluetooth Speakers",
-    description: "Premium audio engineering meets sophisticated design",
-  },
-];
+import useBanners from "@/hooks/useBanners";
 
 const NextArrow = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition hover:bg-white/40"
+    className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-card border border-border shadow-soft p-2 hover:bg-secondary transition-colors"
   >
-    <ArrowRight className="h-6 w-6 text-white" />
+    <ArrowRight className="h-5 w-5 text-foreground" />
   </button>
 );
 
 const PrevArrow = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 backdrop-blur-sm transition hover:bg-white/40"
+    className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-card border border-border shadow-soft p-2 hover:bg-secondary transition-colors"
   >
-    <ArrowLeft className="h-6 w-6 text-white" />
+    <ArrowLeft className="h-5 w-5 text-foreground" />
   </button>
 );
 
 const HeroBanner = () => {
+  const { banners, loading } = useBanners();
+
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: banners.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    fade: true,
-    cssEase: "linear",
+    autoplay: banners.length > 1,
+    autoplaySpeed: 6000,
+    arrows: banners.length > 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     pauseOnHover: true,
   };
 
+  if (loading || banners.length === 0) return null;
+
   return (
-    <div className="hero-slider relative w-full overflow-hidden">
+    <section className="hero-slider-light relative w-full overflow-hidden bg-surface-beige">
       <Slider {...settings}>
-        {slides.map((slide, index) => (
-          <div key={index} className="relative h-[calc(100vh-160px)]">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${slide.image})`,
-              }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h1 className="mb-4 text-4xl sm:text-6xl font-bold tracking-tight">
-                    {slide.title}
+        {banners.map((banner) => (
+          <div key={banner._id}>
+            <div className="px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-10 md:py-16">
+              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div className="flex-1 flex flex-col gap-4 text-center md:text-left">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+                    A Smarter Way to Shop
+                  </span>
+                  <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground leading-tight">
+                    {banner.title}
                   </h1>
-                  <p className="mb-8 text-xl sm:text-2xl font-light">
-                    {slide.description}
-                  </p>
-                  <div className="flex items-center justify-center gap-4">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                    >
-                      <Link to="/category/headphones">Shop Now</Link>
+                  {banner.subtitle && (
+                    <p className="text-base sm:text-lg text-text-secondary max-w-md mx-auto md:mx-0">
+                      {banner.subtitle}
+                    </p>
+                  )}
+                  <div className="flex items-center justify-center md:justify-start gap-3 mt-2">
+                    <Button asChild>
+                      <Link to={banner.ctaUrl || "/shop"}>{banner.ctaText || "Shop Now"}</Link>
                     </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                    >
-                      <Link to="/about-us">Read More</Link>
+                    <Button asChild variant="outline">
+                      <Link to="/categories">Explore Categories</Link>
                     </Button>
                   </div>
+                </div>
+
+                <div className="flex-1 w-full">
+                  <picture>
+                    {banner.mobileImage && (
+                      <source media="(max-width: 640px)" srcSet={banner.mobileImage} />
+                    )}
+                    <img
+                      src={banner.desktopImage}
+                      alt={banner.title}
+                      className="w-full h-[280px] sm:h-[380px] md:h-[420px] object-cover rounded-2xl shadow-soft"
+                    />
+                  </picture>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </Slider>
-    </div>
+    </section>
   );
 };
 

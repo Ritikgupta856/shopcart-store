@@ -56,6 +56,33 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          bg: "hsl(var(--success-bg))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          bg: "hsl(var(--warning-bg))",
+        },
+        danger: {
+          DEFAULT: "hsl(var(--danger))",
+          bg: "hsl(var(--danger-bg))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          bg: "hsl(var(--info-bg))",
+        },
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          beige: "hsl(var(--surface-beige))",
+        },
+        "text-secondary": "hsl(var(--text-secondary))",
+        "text-muted-2": "hsl(var(--text-muted-2))",
+        "border-light": "hsl(var(--border-light))",
+      },
+      boxShadow: {
+        soft: "0 1px 2px 0 rgb(23 32 27 / 0.04), 0 1px 3px 0 rgb(23 32 27 / 0.03)",
+        card: "0 1px 3px 0 rgb(23 32 27 / 0.05)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const getLineKey = (item) =>
+  item.selectedVariant?._id ? `${item._id}__${item.selectedVariant._id}` : item._id;
+
 const useCartStore = create(
   persist(
     (set, get) => ({
-      showCart: false,
-      setShowCart: (showCart) => set({ showCart }),
       cartItems: [],
       setCartItems: (cartItems) => {
         set({ cartItems });
@@ -18,29 +19,31 @@ const useCartStore = create(
 
       handleAddToCart: (product, quantity) => {
         let items = [...get().cartItems];
-        let index = items.findIndex((p) => product._id === p._id);
+        const cartKey = getLineKey(product);
+        let index = items.findIndex((p) => p.cartKey === cartKey);
         if (index !== -1) {
           items[index] = {
             ...items[index],
             quantity: items[index].quantity + quantity,
           };
         } else {
-          items.push({ ...product, quantity });
+          items.push({ ...product, quantity, cartKey });
         }
         set({ cartItems: items });
         get().updateCartMeta();
       },
 
-      handleRemoveFromCart: (product) => {
+      handleRemoveFromCart: (item) => {
         let items = [...get().cartItems];
-        items = items.filter((p) => p._id !== product._id);
+        items = items.filter((p) => p.cartKey !== item.cartKey);
         set({ cartItems: items });
         get().updateCartMeta();
       },
 
-      handleCartProductQuantity: (type, product) => {
+      handleCartProductQuantity: (type, item) => {
         let items = [...get().cartItems];
-        let index = items.findIndex((p) => product._id === p._id);
+        let index = items.findIndex((p) => p.cartKey === item.cartKey);
+        if (index === -1) return;
         if (type === "inc") {
           items[index].quantity += 1;
         } else if (type === "dec") {
@@ -61,7 +64,7 @@ const useCartStore = create(
       },
     }),
     {
-      name: "cartStore", 
+      name: "cartStore",
       partialize: (state) => ({
         cartItems: state.cartItems,
         cartCount: state.cartCount,

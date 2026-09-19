@@ -9,6 +9,11 @@ import categoryRoutes from "./routes/category.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import stripeRoutes from "./routes/stripe.routes.js";
+import bannerRoutes from "./routes/banner.routes.js";
+import dealRoutes from "./routes/deal.routes.js";
+import reviewRoutes from "./routes/review.routes.js";
+import couponRoutes from "./routes/coupon.routes.js";
+import cartRoutes from "./routes/cart.routes.js";
 import { errorHandler, notFoundHandler } from "./middleware/error.middleware.js";
 
 const app = express();
@@ -45,6 +50,11 @@ app.use("/api", categoryRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", uploadRoutes);
 app.use("/api", stripeRoutes);
+app.use("/api", bannerRoutes);
+app.use("/api", dealRoutes);
+app.use("/api", reviewRoutes);
+app.use("/api", couponRoutes);
+app.use("/api", cartRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
