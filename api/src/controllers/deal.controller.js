@@ -3,18 +3,15 @@ import { deleteFromCloudinary } from "../utills/cloudinary.js";
 
 export const addDeal = async (req, res) => {
   try {
-    const { name, description, bannerImage, discount, ctaText, ctaUrl, startDate, endDate, isActive } = req.body;
+    const { name, bannerImage, ctaUrl, startDate, endDate, isActive } = req.body;
 
-    if (!name || !bannerImage || !discount) {
-      return res.status(400).json({ success: false, message: "Name, banner image, and discount are required" });
+    if (!name || !bannerImage) {
+      return res.status(400).json({ success: false, message: "Name and banner image are required" });
     }
 
     const deal = await Deal.create({
       name,
-      description: description || "",
       bannerImage,
-      discount,
-      ctaText: ctaText || "Shop the Deal",
       ctaUrl: ctaUrl || "/",
       startDate: startDate || null,
       endDate: endDate || null,

@@ -24,19 +24,13 @@ const CategoriesPage = () => {
             <Link
               key={category._id}
               to={`/shop/${category.slug}`}
-              className="bg-secondary rounded-xl overflow-hidden block relative group"
+              className="rounded-xl overflow-hidden block group"
             >
               <img
                 src={category.image}
                 alt={category.name}
                 className="w-full h-48 object-cover transition duration-300 ease-in-out group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-end p-3 text-center">
-                <span className="text-white font-semibold text-sm">{category.name}</span>
-                {category.shortDescription && (
-                  <span className="text-white/80 text-xs mt-1">{category.shortDescription}</span>
-                )}
-              </div>
             </Link>
           ))}
       </div>

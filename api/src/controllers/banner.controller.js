@@ -5,8 +5,6 @@ export const addBanner = async (req, res) => {
   try {
     const {
       title,
-      subtitle,
-      ctaText,
       ctaUrl,
       desktopImage,
       mobileImage,
@@ -22,8 +20,6 @@ export const addBanner = async (req, res) => {
 
     const banner = await Banner.create({
       title,
-      subtitle: subtitle || "",
-      ctaText: ctaText || "Shop Now",
       ctaUrl: ctaUrl || "/",
       desktopImage,
       mobileImage: mobileImage || "",

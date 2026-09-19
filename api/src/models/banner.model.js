@@ -3,8 +3,6 @@ import mongoose from "mongoose";
 const bannerSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    subtitle: { type: String, default: "" },
-    ctaText: { type: String, default: "Shop Now" },
     ctaUrl: { type: String, default: "/" },
     desktopImage: { type: String, required: true },
     mobileImage: { type: String, default: "" },

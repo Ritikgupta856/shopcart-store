@@ -27,6 +27,37 @@ export const addCategory = async (req, res) => {
   }
 };
 
+export const updateCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, slug, image, shortDescription, displayOrder, isActive } = req.body;
+
+    const category = await Category.findById(id);
+    if (!category) {
+      return res.status(404).json({ success: false, message: "Category not found" });
+    }
+
+    if (name !== undefined) category.name = name;
+    if (slug !== undefined) category.slug = slug;
+    if (shortDescription !== undefined) category.shortDescription = shortDescription;
+    if (displayOrder !== undefined) category.displayOrder = Number(displayOrder);
+    if (isActive !== undefined) category.isActive = isActive;
+
+    if (image && image !== category.image) {
+      const oldImage = category.image;
+      category.image = image;
+      await deleteFromCloudinary(oldImage);
+    }
+
+    await category.save();
+
+    res.json({ success: true, category });
+  } catch (error) {
+    console.error("Error updating category:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 export const removeCategory = async (req, res) => {
   try {
     const { id } = req.params; 
