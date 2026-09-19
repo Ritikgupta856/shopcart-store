@@ -8,6 +8,7 @@ import EmptyCart from "@/components/cart/EmptyCart";
 import CartSkeleton from "@/components/cart/CartSkeleton";
 import ShopErrorState from "@/components/shop/ShopErrorState";
 import ProductGrid from "@/components/ProductGrid";
+import { PageContainer, PageHeader } from "@/components/ui/page-container";
 import useCartStore from "@/store/useCartStore";
 import useProducts from "@/hooks/useProducts";
 import useCartCalculation from "@/hooks/useCartCalculation";
@@ -15,7 +16,9 @@ import useCartCalculation from "@/hooks/useCartCalculation";
 const Cart = () => {
   const { cartItems } = useCartStore();
   const { products } = useProducts();
-  const [couponCode, setCouponCode] = useState(() => sessionStorage.getItem("shopcart_coupon") || "");
+  const [couponCode, setCouponCode] = useState(
+    () => sessionStorage.getItem("shopcart_coupon") || ""
+  );
 
   const applyCoupon = (code) => {
     setCouponCode(code);
@@ -27,15 +30,27 @@ const Cart = () => {
     sessionStorage.removeItem("shopcart_coupon");
   };
 
-  const { items: calculatedItems, subtotal, discount, shipping, total, coupon, loading, error, refetch } =
-    useCartCalculation(cartItems, couponCode);
+  const {
+    items: calculatedItems,
+    subtotal,
+    discount,
+    shipping,
+    total,
+    coupon,
+    loading,
+    error,
+    refetch,
+  } = useCartCalculation(cartItems, couponCode);
 
   const getCalculatedItem = (item) =>
     calculatedItems.find(
-      (c) => String(c.productId) === String(item._id) && (c.variantId || null) === (item.selectedVariant?._id || null)
+      (c) =>
+        String(c.productId) === String(item._id) &&
+        (c.variantId || null) === (item.selectedVariant?._id || null)
     );
 
   const hasUnavailable = calculatedItems.some((i) => i.unavailable);
+  const itemCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   const recommended = useMemo(() => {
     const cartIds = new Set(cartItems.map((i) => i._id));
@@ -44,50 +59,48 @@ const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <main className="mt-10 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-6">
+      <PageContainer>
         <Breadcrumb items={[{ label: "Home", path: "/" }, { label: "Cart" }]} />
         <EmptyCart />
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="mt-10 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-6 pb-24 lg:pb-6">
+    <PageContainer className="pb-28 lg:pb-16">
       <Breadcrumb items={[{ label: "Home", path: "/" }, { label: "Cart" }]} />
-
-      <div className="mb-6 flex items-end justify-between">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">Your Cart</h1>
-          <p className="text-sm text-text-secondary mt-1">Review your items before checkout.</p>
-        </div>
-        <span className="text-sm text-text-secondary shrink-0">
-          {cartItems.length} Item{cartItems.length !== 1 ? "s" : ""}
-        </span>
-      </div>
+      <PageHeader
+        title="Shopping Cart"
+        description={`${itemCount} item${itemCount !== 1 ? "s" : ""} in your cart`}
+      />
 
       {error ? (
         <ShopErrorState onRetry={refetch} />
       ) : loading && calculatedItems.length === 0 ? (
         <CartSkeleton />
       ) : (
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 min-w-0">
-            <div className="rounded-2xl border border-border bg-card p-5">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+          <div className="min-w-0 flex-1">
+            <div className="divide-y divide-border rounded-xl border border-border bg-card px-5 py-5 sm:px-6">
               {cartItems.map((item) => (
-                <CartItemRow key={item.cartKey} item={item} calculatedItem={getCalculatedItem(item)} />
+                <CartItemRow
+                  key={item.cartKey}
+                  item={item}
+                  calculatedItem={getCalculatedItem(item)}
+                />
               ))}
             </div>
 
             <Link
               to="/shop"
-              className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-primary transition-colors mt-4"
+              className="mt-5 inline-flex items-center gap-2 rounded-md text-sm font-medium text-text-secondary transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              <ArrowLeft size={14} />
-              Continue Shopping
+              <ArrowLeft size={15} />
+              Continue shopping
             </Link>
           </div>
 
-          <div className="w-full lg:w-[340px] shrink-0">
+          <div className="w-full shrink-0 lg:w-[360px]">
             <div className="lg:sticky lg:top-24">
               <OrderSummary
                 subtotal={subtotal}
@@ -96,6 +109,7 @@ const Cart = () => {
                 total={total}
                 coupon={coupon}
                 couponCode={couponCode}
+                itemCount={itemCount}
                 onApplyCoupon={applyCoupon}
                 onRemoveCoupon={removeCoupon}
                 loading={loading}
@@ -107,27 +121,28 @@ const Cart = () => {
       )}
 
       {recommended.length > 0 && (
-        <div className="mt-10">
-          <ProductGrid products={recommended} headingText="You May Also Like" />
+        <div className="mt-16">
+          <ProductGrid products={recommended} headingText="You May Also Like" compact />
         </div>
       )}
 
-      {/* Mobile sticky checkout bar */}
       {!hasUnavailable && (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card border-t border-border p-4 flex items-center justify-between shadow-soft">
-          <div>
-            <span className="text-xs text-text-muted-2 block">Total</span>
-            <span className="font-semibold text-foreground">₹{total.toLocaleString()}</span>
+        <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-border bg-card px-4 py-3 shadow-card lg:hidden">
+          <div className="min-w-0">
+            <span className="block text-xs text-text-muted-2">Total</span>
+            <span className="text-lg font-semibold text-foreground">
+              ₹{total.toLocaleString("en-IN")}
+            </span>
           </div>
           <Link
             to="/checkout"
-            className="bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium"
+            className="inline-flex h-11 shrink-0 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Checkout →
+            Checkout
           </Link>
         </div>
       )}
-    </main>
+    </PageContainer>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Products from "../components/ProductGrid";
-import Loader from "@/components/Loader";
+import ProductSkeleton from "@/components/shop/ProductSkeleton";
 
 const CategoryGrid = () => {
   const [products, setProducts] = useState([]);
@@ -16,7 +16,6 @@ const CategoryGrid = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch products by category slug directly
         const response = await axios.get(
           `${import.meta.env.VITE_SERVER_URL}/api/categories/${slug}`
         );
@@ -32,19 +31,17 @@ const CategoryGrid = () => {
   }, [slug]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mt-10 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-4 md:py-8">
       {loading ? (
-        <p className="text-center text-xl">
-          <Loader />
-        </p>
+        <ProductSkeleton count={8} />
       ) : error ? (
-        <p className="text-center text-red-500">No products Found</p>
+        <p className="text-center text-danger">No products found</p>
       ) : products.length > 0 ? (
-        <Products products={products} innerPage={false} headingText={categoryName} />
+        <Products products={products} innerPage={false} headingText={categoryName} compact />
       ) : (
         <div>
-          <Products products={[]} innerPage={false} headingText={categoryName} />
-          <p className="text-center text-xl">
+          <Products products={[]} innerPage={false} headingText={categoryName} compact />
+          <p className="text-center text-text-muted-2">
             No products found in this category.
           </p>
         </div>

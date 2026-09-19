@@ -1,44 +1,42 @@
 import { useMemo } from "react";
 import Herobanner from "@/components/Herobanner";
-import TrustFeatures from "@/components/TrustFeatures";
 import Category from "@/components/Category";
 import ProductGrid from "@/components/ProductGrid";
 import LimitedTimeDeal from "@/components/LimitedTimeDeal";
 import WhyShopCart from "@/components/WhyShopCart";
+import CategoryGridSkeleton from "@/components/skeletons/CategoryGridSkeleton";
+import ProductSkeleton from "@/components/shop/ProductSkeleton";
 import useCategories from "@/hooks/useCategories";
 import useProducts from "@/hooks/useProducts";
-import { Loader } from "lucide-react";
-
-const LoadingSection = () => (
-  <div className="flex justify-center items-center min-h-[400px] py-8">
-    <div className="text-center space-y-4">
-      <Loader className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
-      <p className="text-text-secondary">Loading ...</p>
-    </div>
-  </div>
-);
 
 const Home = () => {
   const { categories, loading: categoriesLoading } = useCategories();
   const { products, loading: productsLoading } = useProducts();
 
   const trendingProducts = useMemo(
-    () => products.filter((p) => p.isTrending).slice(0, 8),
+    () => products.filter((p) => p.isTrending).slice(0, 4),
     [products]
   );
   const newArrivals = useMemo(
-    () => products.filter((p) => p.isNewArrival).slice(0, 8),
+    () => products.filter((p) => p.isNewArrival).slice(0, 4),
     [products]
   );
 
   return (
     <main>
       <Herobanner />
-      <TrustFeatures />
-      {categoriesLoading ? <LoadingSection /> : <Category categories={categories} />}
+      {categoriesLoading ? (
+        <div className="px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-8 md:py-12">
+          <CategoryGridSkeleton />
+        </div>
+      ) : (
+        <Category categories={categories} />
+      )}
       <LimitedTimeDeal />
       {productsLoading ? (
-        <LoadingSection />
+        <div className="px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-4 md:py-8">
+          <ProductSkeleton count={8} />
+        </div>
       ) : (
         <>
           {trendingProducts.length > 0 && (

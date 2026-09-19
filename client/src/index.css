@@ -2,21 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-.product-card-width {
-  width: calc(25% - 15px);
-}
-
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: hsl(var(--secondary));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--text-muted-2));
 }
 
 @layer base {
@@ -80,5 +81,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Slim scrollbar for filter lists and other scrollable panels inside cards. */
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
   }
 }

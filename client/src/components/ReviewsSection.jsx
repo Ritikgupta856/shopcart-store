@@ -57,12 +57,12 @@ const ReviewsSection = ({ productId }) => {
   if (loading) return null;
 
   return (
-    <div className="mt-12">
-      <h2 className="text-xl font-semibold text-foreground mb-4">Customer Reviews</h2>
+    <div className="mt-16">
+      <h2 className="text-xl font-semibold tracking-tight text-foreground mb-4">Customer Reviews</h2>
 
       <div className="flex flex-col sm:flex-row gap-8 mb-6">
-        <div className="flex flex-col items-center justify-center bg-card border border-border rounded-2xl p-6 min-w-[160px]">
-          <span className="text-4xl font-bold text-foreground">{avgRating || "0"}</span>
+        <div className="flex flex-col items-center justify-center bg-card border border-border rounded-xl p-6 min-w-[160px]">
+          <span className="text-3xl font-semibold text-foreground">{avgRating || "0"}</span>
           <StarRow rating={avgRating} />
           <span className="text-xs text-text-muted-2 mt-1">Based on {count} review{count !== 1 ? "s" : ""}</span>
         </div>
@@ -99,7 +99,7 @@ const ReviewsSection = ({ productId }) => {
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="border border-border rounded-2xl p-4 mb-6 flex flex-col gap-3 max-w-lg">
+        <form onSubmit={handleSubmit} className="border border-border rounded-xl p-4 mb-6 flex flex-col gap-3 max-w-lg">
           <div className="flex items-center gap-2">
             {[1, 2, 3, 4, 5].map((i) => (
               <button type="button" key={i} onClick={() => setRating(i)}>

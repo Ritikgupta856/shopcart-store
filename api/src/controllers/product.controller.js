@@ -145,6 +145,7 @@ export const getAllProducts = async (req, res) => {
       maxPrice,
       sort,
       inStock,
+      minRating,
       collection,
     } = req.query;
 
@@ -198,6 +199,10 @@ export const getAllProducts = async (req, res) => {
     }
     if (inStock === "true") {
       computed = computed.filter((p) => p.totalStock > 0);
+    }
+    if (minRating) {
+      computed = await attachReviewStats(computed);
+      computed = computed.filter((p) => p.rating >= Number(minRating));
     }
 
     const sortFns = {

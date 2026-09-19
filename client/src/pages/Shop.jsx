@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import Breadcrumb from "@/components/shop/Breadcrumb";
 import ShopToolbar from "@/components/shop/ShopToolbar";
+import ActiveFilterChips from "@/components/shop/ActiveFilterChips";
 import FilterSidebar from "@/components/shop/FilterSidebar";
 import MobileFilterSheet from "@/components/shop/MobileFilterSheet";
 import Pagination from "@/components/shop/Pagination";
@@ -9,6 +10,7 @@ import ProductSkeleton from "@/components/shop/ProductSkeleton";
 import ShopEmptyState from "@/components/shop/ShopEmptyState";
 import ShopErrorState from "@/components/shop/ShopErrorState";
 import Product from "@/components/Product";
+import { PageContainer, PageHeader } from "@/components/ui/page-container";
 import useCategories from "@/hooks/useCategories";
 import useProducts from "@/hooks/useProducts";
 import useShopProducts from "@/hooks/useShopProducts";
@@ -27,20 +29,23 @@ const Shop = () => {
   const activeCategory = categories.find((c) => c.slug === slug);
   const collection = searchParams.get("collection") || "";
 
-  const brands = useMemo(() => {
-    return [...new Set(allProducts.map((p) => p.brand).filter(Boolean))].sort();
-  }, [allProducts]);
+  const brands = useMemo(
+    () => [...new Set(allProducts.map((p) => p.brand).filter(Boolean))].sort(),
+    [allProducts]
+  );
+  const catalogHasRatings = useMemo(
+    () => allProducts.some((p) => p.reviewCount > 0),
+    [allProducts]
+  );
 
   const apiParams = useMemo(() => {
     const params = new URLSearchParams();
     if (slug) params.set("category", slug);
     if (collection) params.set("collection", collection);
-    if (searchParams.get("search")) params.set("search", searchParams.get("search"));
-    if (searchParams.get("brand")) params.set("brand", searchParams.get("brand"));
-    if (searchParams.get("minPrice")) params.set("minPrice", searchParams.get("minPrice"));
-    if (searchParams.get("maxPrice")) params.set("maxPrice", searchParams.get("maxPrice"));
-    if (searchParams.get("sort")) params.set("sort", searchParams.get("sort"));
-    if (searchParams.get("inStock")) params.set("inStock", searchParams.get("inStock"));
+    for (const key of ["search", "brand", "minPrice", "maxPrice", "sort", "inStock", "minRating"]) {
+      const value = searchParams.get(key);
+      if (value) params.set(key, value);
+    }
     params.set("page", searchParams.get("page") || "1");
     params.set("limit", String(PAGE_SIZE));
     return params;
@@ -56,19 +61,18 @@ const Shop = () => {
     const timeout = setTimeout(() => {
       const current = searchParams.get("search") || "";
       if (searchInput !== current) {
-        updateParam("search", searchInput || null, true);
+        updateParams({ search: searchInput || null }, true);
       }
     }, 400);
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
 
-  const updateParam = (key, value, resetPage) => {
+  const updateParams = (updates, resetPage) => {
     const next = new URLSearchParams(searchParams);
-    if (value === null || value === "" || value === false) {
-      next.delete(key);
-    } else {
-      next.set(key, value);
+    for (const [key, value] of Object.entries(updates)) {
+      if (value === null || value === "" || value === false) next.delete(key);
+      else next.set(key, value);
     }
     if (resetPage) next.delete("page");
     setSearchParams(next);
@@ -87,29 +91,89 @@ const Shop = () => {
     setSearchParams({});
   };
 
+  const selectedBrand = searchParams.get("brand") || "";
+  const minPrice = searchParams.get("minPrice") || "";
+  const maxPrice = searchParams.get("maxPrice") || "";
+  const minRating = searchParams.get("minRating") || "";
+  const inStock = searchParams.get("inStock") === "true";
+  const activeSearch = searchParams.get("search") || "";
+
+  const chips = useMemo(() => {
+    const list = [];
+    if (activeSearch) {
+      list.push({
+        key: "search",
+        label: `“${activeSearch}”`,
+        onRemove: () => {
+          setSearchInput("");
+          updateParams({ search: null }, true);
+        },
+      });
+    }
+    if (selectedBrand) {
+      list.push({
+        key: "brand",
+        label: selectedBrand,
+        onRemove: () => updateParams({ brand: null }, true),
+      });
+    }
+    if (minPrice || maxPrice) {
+      const label = minPrice && maxPrice
+        ? `₹${Number(minPrice).toLocaleString("en-IN")} – ₹${Number(maxPrice).toLocaleString("en-IN")}`
+        : minPrice
+        ? `Over ₹${Number(minPrice).toLocaleString("en-IN")}`
+        : `Under ₹${Number(maxPrice).toLocaleString("en-IN")}`;
+      list.push({
+        key: "price",
+        label,
+        onRemove: () => updateParams({ minPrice: null, maxPrice: null }, true),
+      });
+    }
+    if (minRating) {
+      list.push({
+        key: "rating",
+        label: `${minRating}★ & up`,
+        onRemove: () => updateParams({ minRating: null }, true),
+      });
+    }
+    if (inStock) {
+      list.push({
+        key: "inStock",
+        label: "In stock only",
+        onRemove: () => updateParams({ inStock: null }, true),
+      });
+    }
+    return list;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSearch, selectedBrand, minPrice, maxPrice, minRating, inStock, searchParams]);
+
   const filterProps = {
     categories,
     activeCategorySlug: slug || null,
     brands,
-    selectedBrand: searchParams.get("brand") || "",
-    onBrandChange: (val) => updateParam("brand", val || null, true),
-    minPrice: searchParams.get("minPrice") || "",
-    maxPrice: searchParams.get("maxPrice") || "",
-    onMinPriceChange: (val) => updateParam("minPrice", val || null, true),
-    onMaxPriceChange: (val) => updateParam("maxPrice", val || null, true),
-    inStock: searchParams.get("inStock") === "true",
-    onInStockChange: (val) => updateParam("inStock", val ? "true" : null, true),
+    selectedBrand,
+    onBrandChange: (val) => updateParams({ brand: val || null }, true),
+    minPrice,
+    maxPrice,
+    onPriceChange: (min, max) => updateParams({ minPrice: min || null, maxPrice: max || null }, true),
+    minRating,
+    onMinRatingChange: (val) => updateParams({ minRating: val || null }, true),
+    showRatingFilter: catalogHasRatings,
+    inStock,
+    onInStockChange: (val) => updateParams({ inStock: val ? "true" : null }, true),
+    activeFilterCount: chips.length,
     onClearAll: handleClearAll,
     buildCategoryLink,
   };
 
-  const pageTitle = collection === "trending"
-    ? "Trending Now"
-    : collection === "new-arrivals"
-    ? "New Arrivals"
-    : activeCategory
-    ? activeCategory.name
-    : "Shop";
+  const pageTitle =
+    collection === "trending"
+      ? "Trending Now"
+      : collection === "new-arrivals"
+      ? "New Arrivals"
+      : activeCategory
+      ? activeCategory.name
+      : "Shop";
 
   const pageDescription = activeCategory
     ? activeCategory.shortDescription || `Explore the latest in ${activeCategory.name.toLowerCase()}.`
@@ -122,60 +186,77 @@ const Shop = () => {
       : [{ label: "Shop" }]),
   ];
 
+  const rangeStart = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(page * PAGE_SIZE, total);
+
   return (
-    <main className="mt-10 px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-40 py-6">
+    <PageContainer>
       <Breadcrumb items={breadcrumbItems} />
+      <PageHeader title={pageTitle} description={pageDescription} />
 
-      <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">{pageTitle}</h1>
-        <p className="text-sm text-text-secondary mt-1">{pageDescription}</p>
-      </div>
-
-      <div className="flex gap-8">
-        <aside className="hidden lg:block w-[260px] shrink-0">
-          <FilterSidebar {...filterProps} />
+      <div className="flex items-start gap-8 xl:gap-10">
+        <aside className="hidden w-[240px] shrink-0 lg:block">
+          <div className="sticky top-24">
+            <FilterSidebar {...filterProps} />
+          </div>
         </aside>
 
-        <div className="flex-1 min-w-0">
+        <section className="min-w-0 flex-1">
           <ShopToolbar
-            total={total}
             search={searchInput}
             onSearchChange={setSearchInput}
             sort={searchParams.get("sort") || ""}
-            onSortChange={(val) => updateParam("sort", val || null, true)}
+            onSortChange={(val) => updateParams({ sort: val || null }, true)}
             onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+            activeFilterCount={chips.length}
           />
 
-          {loading ? (
-            <ProductSkeleton count={PAGE_SIZE} />
-          ) : error ? (
-            <ShopErrorState onRetry={() => setSearchParams(new URLSearchParams(searchParams))} />
-          ) : products.length === 0 ? (
-            <ShopEmptyState onClearFilters={handleClearAll} />
-          ) : (
-            <>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-                {products.map((product) => (
-                  <Product key={product._id} data={product} />
-                ))}
-              </div>
-              <p className="text-center text-xs text-text-muted-2 mt-6">
-                Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} of {total} products
-              </p>
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={(p) => updateParam("page", String(p), false)}
-              />
-            </>
+          {chips.length > 0 && (
+            <div className="mt-4">
+              <ActiveFilterChips chips={chips} onClearAll={handleClearAll} />
+            </div>
           )}
-        </div>
+
+          {!loading && !error && total > 0 && (
+            <p className="mt-4 text-sm text-text-secondary">
+              Showing <span className="font-medium text-foreground">{rangeStart}–{rangeEnd}</span> of{" "}
+              <span className="font-medium text-foreground">{total}</span> products
+            </p>
+          )}
+
+          <div className="mt-5">
+            {loading ? (
+              <ProductSkeleton count={PAGE_SIZE} />
+            ) : error ? (
+              <ShopErrorState onRetry={() => setSearchParams(new URLSearchParams(searchParams))} />
+            ) : products.length === 0 ? (
+              <ShopEmptyState onClearFilters={handleClearAll} />
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 xl:grid-cols-4">
+                  {products.map((product) => (
+                    <Product key={product._id} data={product} />
+                  ))}
+                </div>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={(p) => updateParams({ page: String(p) }, false)}
+                />
+              </>
+            )}
+          </div>
+        </section>
       </div>
 
       {mobileFiltersOpen && (
-        <MobileFilterSheet onClose={() => setMobileFiltersOpen(false)} {...filterProps} />
+        <MobileFilterSheet
+          onClose={() => setMobileFiltersOpen(false)}
+          resultCount={total}
+          {...filterProps}
+        />
       )}
-    </main>
+    </PageContainer>
   );
 };
 

@@ -4,22 +4,30 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import useBanners from "@/hooks/useBanners";
+import BannerSkeleton from "@/components/skeletons/BannerSkeleton";
+
+const arrowClass =
+  "absolute top-1/2 z-10 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/90 text-foreground shadow-soft backdrop-blur transition-colors hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:flex";
 
 const NextArrow = ({ onClick }) => (
   <button
+    type="button"
     onClick={onClick}
-    className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-card border border-border shadow-soft p-2 hover:bg-secondary transition-colors"
+    aria-label="Next banner"
+    className={`${arrowClass} right-4 lg:right-6`}
   >
-    <ArrowRight className="h-5 w-5 text-foreground" />
+    <ArrowRight className="h-5 w-5" />
   </button>
 );
 
 const PrevArrow = ({ onClick }) => (
   <button
+    type="button"
     onClick={onClick}
-    className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-card border border-border shadow-soft p-2 hover:bg-secondary transition-colors"
+    aria-label="Previous banner"
+    className={`${arrowClass} left-4 lg:left-6`}
   >
-    <ArrowLeft className="h-5 w-5 text-foreground" />
+    <ArrowLeft className="h-5 w-5" />
   </button>
 );
 
@@ -40,7 +48,8 @@ const HeroBanner = () => {
     pauseOnHover: true,
   };
 
-  if (loading || banners.length === 0) return null;
+  if (loading) return <BannerSkeleton />;
+  if (banners.length === 0) return null;
 
   return (
     <section className="hero-slider-light relative w-full overflow-hidden">

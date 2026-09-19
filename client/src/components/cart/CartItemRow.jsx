@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Heart, Minus, Plus, Trash2 } from "lucide-react";
 import useCartStore from "@/store/useCartStore";
 import useWishlistStore from "@/store/useWishlistStore";
 
@@ -10,7 +11,10 @@ const CartItemRow = ({ item, calculatedItem }) => {
   const showMrp = item.mrp && Number(item.mrp) > Number(item.price);
   const availableStock = calculatedItem?.availableStock;
   const atMaxStock = availableStock !== undefined && item.quantity >= availableStock;
-  const variantLabel = [item.selectedVariant?.size, item.selectedVariant?.color].filter(Boolean).join(" / ");
+  const variantLabel = [item.selectedVariant?.size, item.selectedVariant?.color]
+    .filter(Boolean)
+    .join(" / ");
+  const lineTotal = Number(item.price) * item.quantity;
 
   const saveForLater = () => {
     toggleWishlist(item);
@@ -19,63 +23,101 @@ const CartItemRow = ({ item, calculatedItem }) => {
   };
 
   return (
-    <div className="flex gap-4 py-4 border-b border-border last:border-0">
+    <div className="flex gap-4 py-5 first:pt-0 last:pb-0 sm:gap-5">
       <Link to={`/product/${item.slug}`} className="shrink-0">
-        <div className="w-24 h-24 rounded-lg bg-secondary flex items-center justify-center overflow-hidden">
-          <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+        <div className="size-24 overflow-hidden rounded-lg border border-border bg-secondary p-2 sm:size-28">
+          <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
         </div>
       </Link>
 
-      <div className="flex-1 min-w-0 flex flex-col justify-between">
-        <div>
-          <Link to={`/product/${item.slug}`} className="font-medium text-sm text-foreground hover:text-primary transition-colors line-clamp-1">
-            {item.name}
-          </Link>
-          {variantLabel && <p className="text-xs text-text-muted-2 mt-0.5">{variantLabel}</p>}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <Link
+              to={`/product/${item.slug}`}
+              className="line-clamp-2 text-sm font-medium leading-5 text-foreground transition-colors hover:text-primary"
+            >
+              {item.name}
+            </Link>
 
-          <div className="flex items-center gap-2 mt-1">
-            <span className="font-semibold text-foreground">₹{item.price}</span>
-            {showMrp && (
-              <>
-                <span className="text-xs text-text-muted-2 line-through">₹{item.mrp}</span>
-                {item.discountPercent > 0 && (
-                  <span className="text-xs font-medium text-success">{item.discountPercent}% OFF</span>
-                )}
-              </>
+            {variantLabel && <p className="mt-1 text-xs text-text-muted-2">{variantLabel}</p>}
+
+            <div className="mt-1.5 flex flex-wrap items-baseline gap-2">
+              <span className="text-sm font-medium text-foreground">
+                ₹{Number(item.price).toLocaleString("en-IN")}
+              </span>
+              {showMrp && (
+                <>
+                  <span className="text-xs text-text-muted-2 line-through">
+                    ₹{Number(item.mrp).toLocaleString("en-IN")}
+                  </span>
+                  {item.discountPercent > 0 && (
+                    <span className="text-xs font-medium text-success">{item.discountPercent}% off</span>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="shrink-0 text-right">
+            <p className="text-base font-semibold text-foreground">
+              ₹{lineTotal.toLocaleString("en-IN")}
+            </p>
+            {item.quantity > 1 && (
+              <p className="mt-0.5 text-xs text-text-muted-2">
+                {item.quantity} × ₹{Number(item.price).toLocaleString("en-IN")}
+              </p>
             )}
           </div>
-
-          {calculatedItem?.unavailable && (
-            <p className="text-xs text-danger mt-1">This product is currently unavailable.</p>
-          )}
-          {!calculatedItem?.unavailable && atMaxStock && availableStock > 0 && (
-            <p className="text-xs text-warning mt-1">Only {availableStock} available.</p>
-          )}
         </div>
 
-        <div className="flex items-center justify-between mt-2">
-          <div className="flex items-center border border-border rounded-md">
+        {calculatedItem?.unavailable ? (
+          <p className="mt-2 w-fit rounded-md bg-danger-bg px-2 py-1 text-xs font-medium text-danger">
+            This product is currently unavailable
+          </p>
+        ) : (
+          atMaxStock &&
+          availableStock > 0 && (
+            <p className="mt-2 w-fit rounded-md bg-warning-bg px-2 py-1 text-xs font-medium text-warning">
+              Only {availableStock} left in stock
+            </p>
+          )
+        )}
+
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-3">
+          <div className="flex h-9 items-center rounded-md border border-border">
             <button
-              className="w-7 h-7 flex items-center justify-center text-text-secondary"
               onClick={() => handleCartProductQuantity("dec", item)}
+              disabled={item.quantity <= 1}
+              aria-label="Decrease quantity"
+              className="flex h-full w-9 items-center justify-center rounded-l-md text-text-secondary transition-colors hover:bg-secondary hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
             >
-              −
+              <Minus size={13} />
             </button>
-            <span className="w-8 text-center text-sm text-foreground">{item.quantity}</span>
+            <span className="w-9 text-center text-sm font-medium text-foreground">{item.quantity}</span>
             <button
-              className="w-7 h-7 flex items-center justify-center text-text-secondary disabled:opacity-30"
-              disabled={atMaxStock}
               onClick={() => handleCartProductQuantity("inc", item)}
+              disabled={atMaxStock}
+              aria-label="Increase quantity"
+              className="flex h-full w-9 items-center justify-center rounded-r-md text-text-secondary transition-colors hover:bg-secondary hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
             >
-              +
+              <Plus size={13} />
             </button>
           </div>
 
-          <div className="flex items-center gap-3 text-xs">
-            <button onClick={saveForLater} className="text-text-secondary hover:text-primary transition-colors">
-              ♡ Save for later
+          <div className="flex items-center gap-4">
+            <button
+              onClick={saveForLater}
+              className="flex items-center gap-1.5 rounded-md text-xs font-medium text-text-secondary transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Heart size={13} />
+              Save for later
             </button>
-            <button onClick={() => handleRemoveFromCart(item)} className="text-text-muted-2 hover:text-danger transition-colors">
+            <button
+              onClick={() => handleRemoveFromCart(item)}
+              className="flex items-center gap-1.5 rounded-md text-xs font-medium text-text-muted-2 transition-colors hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <Trash2 size={13} />
               Remove
             </button>
           </div>

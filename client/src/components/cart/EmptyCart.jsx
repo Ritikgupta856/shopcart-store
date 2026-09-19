@@ -1,21 +1,25 @@
-import { useNavigate } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const EmptyCart = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
-      <div className="flex items-center justify-center size-16 rounded-full bg-secondary">
-        <ShoppingCart className="text-text-muted-2" size={28} />
-      </div>
-      <p className="text-lg font-medium text-foreground">Your cart is empty</p>
-      <p className="text-sm text-text-muted-2">Looks like you haven't added anything yet.</p>
-      <Button className="mt-2" onClick={() => navigate("/shop")}>
-        Start Shopping
+const EmptyCart = () => (
+  <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card px-6 py-20 text-center">
+    <div className="flex size-16 items-center justify-center rounded-full bg-secondary">
+      <ShoppingBag className="text-text-muted-2" size={28} />
+    </div>
+    <h2 className="mt-5 text-lg font-semibold text-foreground">Your cart is empty</h2>
+    <p className="mt-1.5 max-w-sm text-sm text-text-secondary">
+      Looks like you haven&apos;t added anything yet. Browse the catalogue and find something you love.
+    </p>
+    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+      <Button asChild size="lg">
+        <Link to="/shop">Start Shopping</Link>
+      </Button>
+      <Button asChild variant="outline" size="lg">
+        <Link to="/categories">Browse Categories</Link>
       </Button>
     </div>
-  );
-};
+  </div>
+);
 
 export default EmptyCart;

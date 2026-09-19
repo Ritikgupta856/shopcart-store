@@ -15,7 +15,6 @@ import Register from "./pages/Register";
 import Failure from "./pages/Failure";
 import Shop from "./pages/Shop";
 import CategoriesPage from "./pages/CategoriesPage";
-import DealsPage from "./pages/DealsPage";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -49,7 +48,6 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/deals" element={<DealsPage />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />

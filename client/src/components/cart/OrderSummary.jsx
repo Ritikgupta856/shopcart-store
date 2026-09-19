@@ -1,17 +1,31 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaShieldAlt, FaUndo, FaCertificate, FaShippingFast } from "react-icons/fa";
+import OrderTotals from "./OrderTotals";
 
 const trustItems = [
-  { icon: FaShieldAlt, label: "Secure Payments" },
-  { icon: FaUndo, label: "Easy Returns" },
-  { icon: FaCertificate, label: "Genuine Products" },
-  { icon: FaShippingFast, label: "Fast Delivery" },
+  { icon: FaShieldAlt, label: "Secure payments" },
+  { icon: FaUndo, label: "Easy returns" },
+  { icon: FaCertificate, label: "Genuine products" },
+  { icon: FaShippingFast, label: "Fast delivery" },
 ];
 
-const OrderSummary = ({ subtotal, discount, shipping, total, coupon, couponCode, onApplyCoupon, onRemoveCoupon, loading, hasUnavailable }) => {
+const OrderSummary = ({
+  subtotal,
+  discount,
+  shipping,
+  total,
+  coupon,
+  couponCode,
+  itemCount,
+  onApplyCoupon,
+  onRemoveCoupon,
+  loading,
+  hasUnavailable,
+}) => {
   const [codeInput, setCodeInput] = useState("");
   const navigate = useNavigate();
 
@@ -19,85 +33,94 @@ const OrderSummary = ({ subtotal, discount, shipping, total, coupon, couponCode,
     e.preventDefault();
     if (!codeInput.trim()) return;
     onApplyCoupon(codeInput.trim());
+    setCodeInput("");
   };
 
-  return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-      <h2 className="font-semibold text-foreground mb-4">Order Summary</h2>
+  const couponApplied = couponCode && coupon?.valid;
 
-      {/* Coupon */}
-      <div className="mb-4 pb-4 border-b border-border">
-        {couponCode && coupon?.valid ? (
-          <div className="flex items-center justify-between bg-success-bg rounded-lg px-3 py-2">
-            <div>
-              <span className="text-sm font-semibold text-success">{coupon.code}</span>
-              <span className="text-xs text-success block">
-                {coupon.discountType === "percentage" ? `${coupon.discountValue}% OFF` : `₹${coupon.discountValue} OFF`}
-              </span>
+  return (
+    <div className="rounded-xl border border-border bg-card">
+      <div className="border-b border-border px-5 py-4">
+        <h2 className="text-sm font-semibold text-foreground">Order Summary</h2>
+      </div>
+
+      <div className="px-5 py-4">
+        {couponApplied ? (
+          <div className="flex items-center justify-between gap-3 rounded-lg bg-success-bg px-3 py-2.5">
+            <div className="flex min-w-0 items-center gap-2">
+              <Tag size={14} className="shrink-0 text-success" />
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-success">{coupon.code}</p>
+                <p className="text-xs text-success">
+                  {coupon.discountType === "percentage"
+                    ? `${coupon.discountValue}% off applied`
+                    : `₹${coupon.discountValue} off applied`}
+                </p>
+              </div>
             </div>
-            <button onClick={onRemoveCoupon} className="text-xs text-text-secondary hover:text-danger">
-              Remove
+            <button
+              onClick={onRemoveCoupon}
+              aria-label="Remove coupon"
+              className="shrink-0 rounded-md p-1 text-success transition-colors hover:bg-success/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X size={14} />
             </button>
           </div>
         ) : (
-          <form onSubmit={handleApply} className="flex flex-col gap-2">
-            <span className="text-xs text-text-secondary">Have a coupon?</span>
-            <div className="flex gap-2">
+          <form onSubmit={handleApply}>
+            <label htmlFor="coupon" className="text-xs font-medium text-text-secondary">
+              Have a coupon?
+            </label>
+            <div className="mt-1.5 flex gap-2">
               <Input
-                placeholder="Enter coupon code"
+                id="coupon"
+                placeholder="Enter code"
                 value={codeInput}
                 onChange={(e) => setCodeInput(e.target.value)}
-                className="h-9 text-sm uppercase"
+                className="h-10 text-sm uppercase"
               />
-              <Button type="submit" variant="outline" size="sm" disabled={loading}>
+              <Button type="submit" variant="outline" disabled={loading || !codeInput.trim()}>
                 Apply
               </Button>
             </div>
             {couponCode && coupon && !coupon.valid && (
-              <span className="text-xs text-danger">{coupon.message}</span>
+              <p className="mt-2 text-xs text-danger">{coupon.message}</p>
             )}
           </form>
         )}
       </div>
 
-      <div className="flex flex-col gap-2 text-sm">
-        <div className="flex justify-between text-text-secondary">
-          <span>Subtotal</span>
-          <span>₹{subtotal.toLocaleString()}</span>
-        </div>
-        {discount > 0 && (
-          <div className="flex justify-between text-success">
-            <span>Discount</span>
-            <span>-₹{discount.toLocaleString()}</span>
-          </div>
+      <div className="border-t border-border px-5 py-4">
+        <OrderTotals
+          subtotal={subtotal}
+          discount={discount}
+          shipping={shipping}
+          total={total}
+          coupon={coupon}
+          itemCount={itemCount}
+        />
+
+        <Button
+          className="mt-5 w-full"
+          size="lg"
+          disabled={loading || hasUnavailable}
+          onClick={() => navigate("/checkout")}
+        >
+          {loading ? "Updating..." : "Proceed to Checkout"}
+          {!loading && <ArrowRight size={16} />}
+        </Button>
+
+        {hasUnavailable && (
+          <p className="mt-2 text-center text-xs text-danger">
+            Remove unavailable items to continue
+          </p>
         )}
-        <div className="flex justify-between text-text-secondary">
-          <span>Shipping</span>
-          <span>{shipping === 0 ? "FREE" : `₹${shipping}`}</span>
-        </div>
       </div>
 
-      <div className="border-t border-border mt-3 pt-3 flex justify-between items-center">
-        <span className="font-semibold text-foreground">Total</span>
-        <span className="font-semibold text-lg text-foreground">₹{total.toLocaleString()}</span>
-      </div>
-
-      {shipping === 0 && subtotal > 0 && (
-        <p className="text-xs text-text-muted-2 mt-1">Free delivery on orders above ₹999</p>
-      )}
-
-      <Button
-        className="w-full mt-4"
-        disabled={loading || hasUnavailable}
-        onClick={() => navigate("/checkout")}
-      >
-        Proceed to Checkout →
-      </Button>
-
-      <div className="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-border">
+      <div className="grid grid-cols-2 gap-y-2.5 border-t border-border px-5 py-4">
         {trustItems.map((item) => (
-          <div key={item.label} className="flex items-center gap-1.5 text-xs text-text-secondary">
-            <item.icon size={12} className="text-primary shrink-0" />
+          <div key={item.label} className="flex items-center gap-2 text-xs text-text-secondary">
+            <item.icon size={12} className="shrink-0 text-primary" />
             {item.label}
           </div>
         ))}

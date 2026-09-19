@@ -1,4 +1,4 @@
-import { SlidersHorizontal, Search } from "lucide-react";
+import { SlidersHorizontal, Search, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const sortOptions = [
@@ -8,40 +8,57 @@ const sortOptions = [
   { value: "price-high", label: "Price: High to Low" },
 ];
 
-const ShopToolbar = ({ total, search, onSearchChange, sort, onSortChange, onOpenMobileFilters }) => {
+const ShopToolbar = ({
+  search,
+  onSearchChange,
+  sort,
+  onSortChange,
+  onOpenMobileFilters,
+  activeFilterCount,
+}) => {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
-      <span className="text-sm text-text-secondary shrink-0">{total} products</span>
+    <div className="flex items-center gap-3">
+      <button
+        onClick={onOpenMobileFilters}
+        className="relative flex h-10 shrink-0 items-center gap-2 rounded-md border border-input px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 lg:hidden"
+      >
+        <SlidersHorizontal size={15} />
+        Filters
+        {activeFilterCount > 0 && (
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-primary-foreground">
+            {activeFilterCount}
+          </span>
+        )}
+      </button>
 
-      <div className="relative flex-1">
+      <div className="relative min-w-0 flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted-2" size={16} />
         <Input
-          placeholder="Search products..."
+          placeholder="Search in this collection..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           className="pl-9"
         />
       </div>
 
-      <select
-        value={sort}
-        onChange={(e) => onSortChange(e.target.value)}
-        className="h-10 rounded-md border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring shrink-0"
-      >
-        {sortOptions.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            Sort by: {opt.label}
-          </option>
-        ))}
-      </select>
-
-      <button
-        onClick={onOpenMobileFilters}
-        className="lg:hidden flex items-center gap-2 h-10 px-4 rounded-md border border-input text-sm text-foreground shrink-0"
-      >
-        <SlidersHorizontal size={16} />
-        Filters
-      </button>
+      <div className="relative shrink-0">
+        <select
+          value={sort}
+          onChange={(e) => onSortChange(e.target.value)}
+          aria-label="Sort products"
+          className="h-10 appearance-none rounded-md border border-input bg-background pl-3 pr-9 text-sm text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          {sortOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              Sort: {opt.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          size={15}
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-muted-2"
+        />
+      </div>
     </div>
   );
 };

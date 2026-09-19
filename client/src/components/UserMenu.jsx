@@ -15,7 +15,10 @@ const UserMenu = ({ setshowMenu }) => {
   const close = () => setshowMenu(false);
 
   return (
-    <div className="absolute top-14 right-4 sm:right-10 z-30 flex min-w-[220px] flex-col rounded-lg border border-border bg-card shadow-soft overflow-hidden">
+    <div
+      role="menu"
+      className="absolute right-0 top-full z-30 mt-2 flex min-w-[220px] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card"
+    >
       {user ? (
         <div>
           <div className="px-4 py-3 border-b border-border">

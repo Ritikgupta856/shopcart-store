@@ -17,7 +17,7 @@ const uploadOnCloudinary = (fileBuffer, folder = "misc") => {
           console.error("Cloudinary upload error:", error);
           return resolve(null);
         }
-        console.log("File is uploaded to Cloudinary:", result.url);
+        console.log("File is uploaded to Cloudinary:", result.secure_url);
         resolve(result);
       }
     );
