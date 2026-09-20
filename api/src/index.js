@@ -17,6 +17,7 @@ import cartRoutes from "./routes/cart.routes.js";
 import { errorHandler, notFoundHandler } from "./middleware/error.middleware.js";
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cors());
